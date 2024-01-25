@@ -4,13 +4,15 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <link rel="icon" href="favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
+    <!--在 <body> 标签中，有一个 <div id="app"></div> 的空容器。这个容器被用来挂载 Vue 应用程序。
+    当 Vue 实例启动时，它会将组件渲染到这个容器中。即将App的内容渲染到网页的body中-->
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
