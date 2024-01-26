@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <h2>首页</h2>
+  <a-page-header>首页</a-page-header>
 </template>
 
 <style scoped>
