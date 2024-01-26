@@ -63,14 +63,17 @@ export default {
   npm i --save ant-design-vue@next：安装 ant-design-vue 的最新预发布版本，并将其添加到 package.json 文件中-->
   <div>
     <a-page-header>登录页面</a-page-header>
-    <!--antd使用model指令来实现表单项与数据的双向绑定。
-    即model对应的loginForm指的是script中的data，通过绑定loginForm.account，使输入框中的值传入data中-->
     <a-form :model="loginForm">
-      <a-form-item :rules="[{required:true,message:'输入账号'}]" label="账号">
-        <a-input v-model:value="loginForm.account"/>
+      <a-form-item :rules="[{required:true,message:'输入账号'}]" label="账号" name="account">
+        <!--antd使用model指令来实现表单项与数据的双向绑定。
+        即model对应的loginForm指的是script中的data，通过绑定loginForm.account，使输入框中的值传入data中-->
+        <a-input v-model="loginForm.account"/>
       </a-form-item>
-      <a-form-item :rules="[{required:true,message:'输入密码'}]" label="密码">
-        <a-input-password v-model:value="loginForm.password"/>
+      <!--当你使用 v-model 绑定表单值时，需要确保 <a-form-item> 组件中的 name 属性与表单对象中的字段名称相匹配。
+      这样，当调用表单验证方法时，验证器就能根据 name 属性找到对应的字段，并对其进行验证。-->
+      <a-form-item :rules="[{required:true,message:'输入密码'}]" label="密码" name="password">
+        <a-input-password v-model="loginForm.password"/>
+
       </a-form-item>
       <!--登录按钮使用了 @click 指令来监听点击事件，并将其绑定到 login 方法上，当用户点击登录按钮时，就会触发点击事件，然后自动调用组件中定义的 login 方法。
       将 loading 属性绑定到登录按钮的 :loading 特性上，可以动态控制按钮的加载状态。-->
