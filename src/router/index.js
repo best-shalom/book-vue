@@ -7,31 +7,36 @@
 // 在 main.js 文件中，你需要引入 Vue、创建根组件，并在 Vue 实例中指定根组件以及挂载的 DOM 元素。
 // 此外，main.js 也用于引入其他插件或库，配置全局设置，以及注册全局组件、指令等。
 //综上所述，index.js 主要用于配置 Vue Router 的路由表，而 main.js 则是应用的入口文件，用于初始化 Vue 实例和进行一些全局的配置。
-import {createRouter,createWebHistory} from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 
 import Login from "@/views/Login.vue";
-import Home from "@/views/Home.vue";
+import Register from "@/views/Register.vue";
 
 // Vue2中使用Vue.use(VueRouter)使用路由：
 // Vue.use(VueRouter) 是 Vue.js 官方推荐的一种使用 Vue 插件的方式。在这里，VueRouter 是 Vue.js 的一个插件，用于提供路由功能。
 // 通过调用 Vue.use(VueRouter)，我们可以将 VueRouter 插件注册到 Vue.js 中，并使其在全局范围内可用。
 
 // 定义路由表,指定每个 URL 路径与对应的组件。
-const routes=[
+const routes = [
     {
+        // 将根路径重定向到登录页面
         path: '/',
-        name: '首页',
-        component: Home
+        redirect: '/login'
     },
     {
-        path:'/login',
+        path: '/login',
         name: '登录',
-        component:Login
+        component: Login
+    },
+    {
+        path: '/register',
+        name: '注册',
+        component: Register
     }
 ]
 
 //创建一个新的 Vue Router 实例
-const router=createRouter({
+const router = createRouter({
     // createWebHistory() 是 Vue Router 提供的一个函数，用于创建基于浏览器历史记录的路由模式。
     // 在 Vue Router 中，有两种常见的路由模式：哈希模式（Hash Mode）和历史模式（History Mode）。
     // 哈希模式使用 URL 中的 hash（#）来管理路由，例如 https://example.com/#/home。而历史模式则使用浏览器的历史记录 API 来管理路由，例如 https://example.com/home。
