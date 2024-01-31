@@ -16,7 +16,7 @@
     a-col:用于创建网格系统中的列-->
     <a-row class="login-main">
       <a-col class="back-container">
-        <img alt="背景" src="@/assets/img.png">
+        <img alt="登录框背景" src="@/assets/img.png">
       </a-col>
       <a-col class="form-container">
         <div class="title">登录</div>
