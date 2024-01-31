@@ -40,6 +40,7 @@
 </template>
 
 <script>
+// 导出模块为一整个默认的对象，通过 import 语句可以将该对象导入为默认导出项
 export default {
   data() {
     return {
@@ -57,5 +58,39 @@ export default {
 
 
 <style scoped>
+/*style注释不能用双杠，要用杠星*/
+/*在调试容器、组件样式时，可以在浏览器的相应页面实时刷新查看不同设置的对应效果*/
+.register-container {
+  height: 100vh;
+  background: url("@/assets/background.svg");
+  background-size: cover;
+}
+
+.register-main {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 20px;
+  width: 800px;
+  transform: translate(-50%, -50%); /* 使用通用的平移变换方法，在垂直和水平方向上均向左上方偏移50% */
+  background: #FFFFFF;
+}
+
+.back-container {
+  height: 500px;
+
+  img {
+    border-radius: 18px 0 0 18px;
+    display: inline-block;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.form-container {
+  margin-top: 30px;
+  padding: 0 50px;
+}
 
 </style>

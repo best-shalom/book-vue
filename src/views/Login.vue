@@ -133,7 +133,7 @@ export default {
 <style scoped>
 .login-container {
   height: 100vh;
-  background: url("../assets/background.svg");
+  background: url("@/assets/background.svg");
   background-size: cover;
 }
 
