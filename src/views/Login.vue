@@ -81,8 +81,9 @@ export default {
       showAlert: false,
       // 填写内容的规则校验
       rules: {
-        account: {required: true, type: 'string', message: '请输入账号'},
-        password: {required: true, type: 'string', message: '请输入密码'}
+        // trigger 的值选 blur ，即失去焦点时进行验证。
+        account: {required: true, message: '请输入账号', trigger: 'blur'},
+        password: {required: true, message: '请输入密码', trigger: 'blur'}
       }
     }
   },
