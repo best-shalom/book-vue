@@ -16,12 +16,12 @@
           <!--账号-->
           <a-form-item>
             <span class="gray">账号</span>
-            <a-input v-model="registerForm.account"/>
+            <a-input v-model:value="registerForm.account"/>
           </a-form-item>
           <!--密码-->
           <a-form-item>
             <span class="gray">密码</span>
-            <a-input-password v-model="registerForm.password"/>
+            <a-input-password v-model:value="registerForm.password"/>
           </a-form-item>
           <!--确认密码-->
           <a-form-item>
@@ -32,7 +32,7 @@
           </a-form-item>
           <!--注册按钮-->
           <a-form-item>
-            <a-button type="primary">注册</a-button>
+            <a-button :loading="loading" type="primary" @click="register">注册</a-button>
             <router-link to="/login">
               <a-button type="link">已有账号？去登录</a-button>
             </router-link>
@@ -40,11 +40,15 @@
         </a-form>
       </a-col>
     </a-row>
+    <a-alert v-if="showAlert" :message="'注册失败：'+error" closable description="账号已存在" type="warning"
+             @close="showAlert=false"/>
   </div>
 </template>
 
 <script>
 // 导出模块为一整个默认的对象，通过 import 语句可以将该对象导入为默认导出项
+import router from "@/router";
+
 export default {
   data() {
     return {
@@ -52,10 +56,38 @@ export default {
       registerForm: {
         account: '',
         password: '',
-      }
+      },
+      error: '',
+      loading: false,
+      showAlert: false
     }
   },
-  methods() {
+  methods: {
+    register() {
+      try {
+        console.log('注册')
+        this.loading = true
+        const params = {
+          account: this.registerForm.account,
+          password: this.registerForm.password
+        }
+        console.log(params)
+        this.$api.register(params).then(response => {
+          if (response.data.code === 0) {
+            this.error = response.data.msg
+            this.showAlert = true
+          } else {
+            console.log("注册成功")
+            router.push('/home')
+          }
+        })
+      } catch (error) {
+        this.error = "异常错误"
+        this.showAlert = true
+      } finally {
+        this.loading = false
+      }
+    }
   }
 }
 </script>

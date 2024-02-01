@@ -24,19 +24,18 @@
     :model="loginForm"：将loginForm作为表单的数据模型，方便对表单数据进行管理和处理
     :label-col：设置表单项的标签宽度
     :wrapper-col：设置表单项的内容宽度-->
-        <a-form :model="loginForm">
+        <a-form>
           <a-form-item :rules="[{required:true,message:'输入账号'}]" name="account">
             <span class="gray">账号</span>
             <!--antd使用model指令来实现表单项与数据的双向绑定。
             即model对应的loginForm指的是script中的data，通过绑定loginForm.account，使输入框中的值传入data中-->
-            <a-input v-model="loginForm.account"/>
+            <a-input v-model:value="loginForm.account"/>
           </a-form-item>
           <!--当你使用 v-model 绑定表单值时，需要确保 <a-form-item> 组件中的 name 属性与表单对象中的字段名称相匹配。
           这样，当调用表单验证方法时，验证器就能根据 name 属性找到对应的字段，并对其进行验证。-->
           <a-form-item :rules="[{required:true,message:'输入密码'}]" name="password">
             <span class="gray">密码</span>
-            <a-input-password v-model="loginForm.password"/>
-
+            <a-input-password v-model:value="loginForm.password"/>
           </a-form-item>
           <!--登录按钮使用了 @click 指令来监听点击事件，并将其绑定到 login 方法上，当用户点击登录按钮时，就会触发点击事件，然后自动调用组件中定义的 login 方法。
           将 loading 属性绑定到登录按钮的 :loading 特性上，可以动态控制按钮的加载状态。-->
@@ -108,7 +107,7 @@ export default {
             this.error = response.data.msg
             this.showAlert = true
           } else {
-            console.log("登录成功")
+            console.log(response.data.msg)
             router.push('/home')
           }
         })

@@ -11,6 +11,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 
 import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
+import Home from "@/views/Home.vue";
 
 // Vue2中使用Vue.use(VueRouter)使用路由：
 // Vue.use(VueRouter) 是 Vue.js 官方推荐的一种使用 Vue 插件的方式。在这里，VueRouter 是 Vue.js 的一个插件，用于提供路由功能。
@@ -32,6 +33,11 @@ const routes = [
         path: '/register',
         name: '注册',
         component: Register
+    },
+    {
+        path: '/home',
+        name: '首页',
+        component: Home
     }
 ]
 
