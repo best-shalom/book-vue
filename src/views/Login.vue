@@ -24,8 +24,8 @@
     :model="loginForm"：将loginForm作为表单的数据模型，方便对表单数据进行管理和处理
     :label-col：设置表单项的标签宽度
     :wrapper-col：设置表单项的内容宽度-->
-        <a-form>
-          <a-form-item :rules="[{required:true,message:'输入账号'}]" name="account">
+        <a-form :model="loginForm" :rules="rules">
+          <a-form-item name="account">
             <span class="gray">账号</span>
             <!--antd使用model指令来实现表单项与数据的双向绑定。
             即model对应的loginForm指的是script中的data，通过绑定loginForm.account，使输入框中的值传入data中-->
@@ -33,7 +33,7 @@
           </a-form-item>
           <!--当你使用 v-model 绑定表单值时，需要确保 <a-form-item> 组件中的 name 属性与表单对象中的字段名称相匹配。
           这样，当调用表单验证方法时，验证器就能根据 name 属性找到对应的字段，并对其进行验证。-->
-          <a-form-item :rules="[{required:true,message:'输入密码'}]" name="password">
+          <a-form-item name="password">
             <span class="gray">密码</span>
             <a-input-password v-model:value="loginForm.password"/>
           </a-form-item>
@@ -41,7 +41,9 @@
           将 loading 属性绑定到登录按钮的 :loading 特性上，可以动态控制按钮的加载状态。-->
           <a-form-item>
             <a-button :loading="loading" type="primary" @click="login">登录</a-button>
-            <a-button class="register-button" @click="register">注册</a-button>
+            <router-link to="/register">
+              <a-button class="register-button">注册</a-button>
+            </router-link>
           </a-form-item>
         </a-form>
       </a-col>
@@ -76,7 +78,12 @@ export default {
       },
       error: '',
       loading: false,
-      showAlert: false
+      showAlert: false,
+      // 填写内容的规则校验
+      rules: {
+        account: {required: true, type: 'string', message: '请输入账号'},
+        password: {required: true, type: 'string', message: '请输入密码'}
+      }
     }
   },
   methods: {
@@ -119,10 +126,6 @@ export default {
         // 结束加载
         this.loading = false
       }
-    },
-
-    register() {
-      router.push('/register')
     }
   }
 

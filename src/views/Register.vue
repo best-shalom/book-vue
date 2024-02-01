@@ -40,8 +40,7 @@
         </a-form>
       </a-col>
     </a-row>
-    <a-alert v-if="showAlert" :message="'注册失败：'+error" closable description="账号已存在" type="warning"
-             @close="showAlert=false"/>
+    <a-alert v-if="showAlert" :message="'注册失败：'+error" closable type="warning" @close="showAlert=false"/>
   </div>
 </template>
 
