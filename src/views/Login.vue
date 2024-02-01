@@ -24,7 +24,7 @@
     :model="loginForm"：将loginForm作为表单的数据模型，方便对表单数据进行管理和处理
     :label-col：设置表单项的标签宽度
     :wrapper-col：设置表单项的内容宽度-->
-        <a-form :model="loginForm" class="form">
+        <a-form :model="loginForm">
           <a-form-item :rules="[{required:true,message:'输入账号'}]" name="account">
             <span class="gray">账号</span>
             <!--antd使用model指令来实现表单项与数据的双向绑定。
@@ -40,9 +40,9 @@
           </a-form-item>
           <!--登录按钮使用了 @click 指令来监听点击事件，并将其绑定到 login 方法上，当用户点击登录按钮时，就会触发点击事件，然后自动调用组件中定义的 login 方法。
           将 loading 属性绑定到登录按钮的 :loading 特性上，可以动态控制按钮的加载状态。-->
-          <a-form-item :wrapper-col="{offset: 8,span: 16}">
+          <a-form-item>
             <a-button :loading="loading" type="primary" @click="login">登录</a-button>
-            <a-button @click="register">注册</a-button>
+            <a-button class="register-button" @click="register">注册</a-button>
           </a-form-item>
         </a-form>
       </a-col>
@@ -162,16 +162,21 @@ export default {
   .form-container {
     margin-top: 30px; /* 设置上边距为30像素 */
     padding: 0 50px; /* 设置左右内边距为50像素，上下内边距为0 */
+    width: 350px;
 
     .title {
       padding: 36px 0 20px 0;
       font-size: 30px;
-      text-align: center;
+      text-align: center; /* 文字居中 */
       color: #333333;
     }
 
     .gray {
       color: gray;
+    }
+
+    .register-button {
+      left: 10%;
     }
   }
 }
