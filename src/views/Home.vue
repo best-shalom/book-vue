@@ -11,20 +11,23 @@
     </nav>
     <!-- 使用书籍列表组件，并传递书籍数据 -->
     <BookList :books="books"/>
-
     <!-- 路由视图 -->
     <router-view/>
+    <!-- 使用分页组件，点击触发handlePageChange-->
+    <Pagination :currentPage="bookFilter.page" :totalPages="totalPages" @page-changed="handlePageChange"/>
   </div>
 </template>
 
 
 <script>
 import BookList from './BookList.vue';
+import Pagination from "@/components/Pagination.vue";
 
 export default {
   components: {
     // 注册 BookList 组件
-    BookList
+    BookList,
+    Pagination
   },
   data() {
     return {
@@ -35,11 +38,15 @@ export default {
         classifyName: null,
         orderByFinish: 2,
         orderByUpload: 0,
-        page: '1',
+        page: '0',
         size: '10',
       },
       // 根据分类等获取到的书籍数据
-      books: []
+      books: [],
+      // 总书籍数，用于计算总页数
+      totalBooks: 0,
+      // 总页数
+      totalPages: 0
     }
   },
   methods: {
@@ -58,9 +65,21 @@ export default {
       this.$api.bookList(this.bookFilter).then(response => {
         if (response.data.code === 1) {
           console.log(response.data.data);
-          this.books = response.data.data;
+          let data = response.data.data
+          this.books = data.bookList;
+          // 更新总书籍数和总页数
+          this.totalBooks = data.pageInfo.totalCount;
+          this.totalPages = data.pageInfo.totalPages;
+          // 通知分页器进行更新
+          Pagination.changePage(this.totalPages);
         }
       }).catch(error => console.error('Error fetching books:', error));
+    },
+    handlePageChange(newPage) {
+      // 将页码设置为新页码
+      this.bookFilter.page = newPage.toString();
+      // 重新加载数据
+      this.fetchBooks();
     }
   },
   // mounted 是一个生命周期钩子，用来在组件的实例被挂载到DOM上之后执行。这是初始化页面数据、发送网络请求或执行其他只有在页面完全加载之后才能进行的操作的理想时机。
