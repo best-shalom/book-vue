@@ -33,8 +33,8 @@ export default {
       // 筛选条件
       bookFilter: {
         classifyName: null,
-        orderByFinish: 0,
-        orderByUpload: 1,
+        orderByFinish: 2,
+        orderByUpload: 0,
         page: '1',
         size: '10',
       },
@@ -60,8 +60,7 @@ export default {
           console.log(response.data.data);
           this.books = response.data.data;
         }
-      })
-          .catch(error => console.error('Error fetching books:', error));
+      }).catch(error => console.error('Error fetching books:', error));
     }
   },
   // mounted 是一个生命周期钩子，用来在组件的实例被挂载到DOM上之后执行。这是初始化页面数据、发送网络请求或执行其他只有在页面完全加载之后才能进行的操作的理想时机。

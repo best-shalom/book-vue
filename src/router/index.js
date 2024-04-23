@@ -12,6 +12,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
 import Home from "@/views/Home.vue";
+import BookDetails from "@/views/BookDetails.vue";
 
 // Vue2中使用Vue.use(VueRouter)使用路由：
 // Vue.use(VueRouter) 是 Vue.js 官方推荐的一种使用 Vue 插件的方式。在这里，VueRouter 是 Vue.js 的一个插件，用于提供路由功能。
@@ -38,6 +39,15 @@ const routes = [
         path: '/home',
         name: '首页',
         component: Home
+    },
+    {
+        // :bookId 是一个动态路由参数，它表示这个路径可以匹配任何以 /bookDetails/ 开头的路径，并且在匹配时会提取出 bookId 参数的值。
+        path: '/bookDetails/:bookId',
+        name: '书籍详情',
+        // props是用来确定是否将路由参数作为组件的属性传递，设置为 true 表示将路由参数作为组件的属性传递，这样在 BookDetails 组件中就可以通过 props 接收到 id 参数的值。
+        props: true,
+        // component是这个路由对应的组件，这里是 BookDetails 组件，当匹配到这个路由时，将会渲染 BookDetails 组件的内容。
+        component: BookDetails
     }
 ]
 

@@ -3,7 +3,14 @@
     <ul>
       <!-- 循环显示所有书籍 -->
       <li v-for="book in books" :key="book.id">
-        {{ book.newName }} - {{ book.tag }}
+        <router-link :to="'/bookDetails/'+book.id">
+          {{ book.newName }}
+        </router-link>
+        <p>标签: {{ book.tag }}</p>
+        <p>星级: {{ book.star }}</p>
+        <p>完结时间：{{ book.finishTime }}</p>
+        <p>简介：{{ book.information }}</p>
+        <p>大小：{{ book.fileSize }}</p>
       </li>
     </ul>
   </div>
