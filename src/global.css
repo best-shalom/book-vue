@@ -1,0 +1,11 @@
+/*全局样式*/
+.alert {
+    padding: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.alert-warning {
+    background-color: #f4d684;
+}

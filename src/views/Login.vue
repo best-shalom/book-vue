@@ -54,7 +54,16 @@
     closable使关闭按钮可以显示（默认不显示）
     使用:message动态的为警告框添加error的内容；
     点击关闭后时设置为false，即不显示-->
-    <a-alert v-if="showAlert" :message="'登录失败：'+error" closable type="warning" @close="showAlert=false"/>
+    <!--
+    :class 绑定
+    :class 是 Vue.js 中用于动态绑定 class 的指令。它可以接受一个对象、数组或字符串作为参数，用于动态地添加或移除元素的类名。
+    使用 :class 可以根据数据的变化动态地添加或移除类名，从而改变元素的样式。
+    class 静态绑定
+    class 是 HTML 中的属性，用于静态地为元素添加一个或多个类名。这些类名不会随着数据的变化而改变。
+    使用 class 可以在不需要动态绑定的情况下为元素添加类名。-->
+    <a-alert v-if="showAlert" :message="'登录失败：'+error" class="alert alert-warning" closable
+             type="warning"
+             @close="showAlert=false"/>
   </div>
 </template>
 
@@ -134,6 +143,7 @@ export default {
 </script>
 
 <style scoped>
+
 .login-container {
   height: 100vh;
   background: url("@/assets/background.svg");

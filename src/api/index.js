@@ -18,5 +18,11 @@ export default {
     },
     register(params) {
         return http.post('/user/register/', params)
-    }
+    },
+    bookList(params) {
+        return http.post('/book/listBooks', params)
+    },
+    classifyList(params) {
+        return http.get('/classify/showAllName', params)
+    },
 }

@@ -1,3 +1,4 @@
+<!--全局设置-->
 <template>
   <div>
     <!--App通过main.js中的createApp(App)被渲染到 index.html 中的容器元素中，
@@ -10,3 +11,5 @@
 </template>
 <script setup>
 </script>
+
+

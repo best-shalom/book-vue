@@ -2,6 +2,8 @@ import {createApp} from 'vue'
 import App from './App.vue'
 import router from '@/router/index.js'
 import api from '@/api/index'
+// 引入全局样式文件
+import './global.css'
 
 // ant-design：全局完整注册,然后就可以把原生的html组件改成它的组件：https://www.antdv.com/components/button-cn
 import Antd from 'ant-design-vue'
