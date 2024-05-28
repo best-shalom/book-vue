@@ -25,7 +25,7 @@
         style="padding: 10px;"：这是一个行内样式，它为每个列表项设置了内边距为10像素。这样做的目的是为了在列表项的内容和边界之间创建一些空白空间，使得列表项看起来更加美观。
         @click="fetchBooks(genre)"：这是一个点击事件监听器，当用户点击列表项时，会调用 fetchBooks 方法并传递当前列表项的 genre 参数。这个功能通常用于实现用户与页面的交互，比如点击某个列表项后加载相关数据等操作。
         -->
-        <li v-for="genre in genres" :key="genre" style="padding: 10px;" @click="fetchBooks(genre)">
+        <li v-for="genre in genres" :key="genre" style="padding: 10px;" @click="changeFilter(genre)">
           <!--
           href="#"：这是链接的目标 URL，# 表示当前页面的位置。在这种情况下，点击链接不会导航到页面的其他位置，而是停留在当前页面。这种用法通常用于实现具有点击行为但不需要实际导航的元素。
           style="text-decoration: none; color: #333; font-weight: bold;"：这是链接的样式设置。它将链接的文本装饰（比如下划线）去掉 (text-decoration: none;)，将链接文本的颜色设置为黑色 (color: #333;)，并将链接文本的字体加粗 (font-weight: bold;)。这样做的目的是为了使链接看起来更加美观和易于识别。
@@ -46,9 +46,12 @@
       <Pagination>: 这是一个自定义的 Vue.js 组件，用于处理分页功能。
       :currentPage="bookFilter.page": 这是一个绑定（binding）语法，将 currentPage 属性绑定到 Vue 实例中的 bookFilter.page 变量上。这表示当前页的值会与 bookFilter.page 变量保持同步，任何时候 bookFilter.page 变化时，currentPage 也会随之更新。
       :totalPages="totalPages": 同样是一个绑定语法，将 totalPages 属性绑定到 Vue 实例中的 totalPages 变量上。这表示总页数会与 totalPages 变量保持同步，任何时候 totalPages 变化时，totalPages 也会随之更新。
-      @page-changed="handlePageChange": 这是一个事件监听器，用于监听 page-changed 事件，并在触发时调用 Vue 实例中的 handlePageChange 方法。通常，这个方法会处理页码变化时的逻辑，例如更新页面内容或从服务器请求新的数据。
+      在分页器组件中，当页码发生变化时，通过 $emit 触发 update:currentPage 事件，并传递新的页码值给父组件。
+      最后，在父组件中监听分页器组件发出的 update:currentPage 事件，将收到的新页码值更新到父组件的数据中，触发数据更新，从而重新加载对应页的数据。
       -->
-      <Pagination :currentPage="bookFilter.page" :totalPages="totalPages" @page-changed="handlePageChange"/>
+      <Pagination :currentPage="this.pages.pageNum" :totalPages="this.pages.total"
+                  @update:currentPage="updateCurrentPage"
+      />
     </div>
   </div>
 </template>
@@ -78,49 +81,67 @@ export default {
       },
       // 根据分类等获取到的书籍数据
       books: [],
-      // 总书籍数，用于计算总页数
-      totalBooks: 0,
-      // 总页数
-      totalPages: 0
+      pages: {
+        totalBooks: 0, // 总书籍数
+        total: 0, // 总页数
+        pageNum: 1, // 当前页码
+        pageSize: 20 // 每页显示条目个数不传默认20,
+      },
     }
   },
   methods: {
+    changeFilter(genre) {
+      this.bookFilter.classifyName = genre;
+      // 重置页码到第一页
+      this.pages.pageNum = 1
+      // 调用 fetchBooks 方法加载新分类的书籍
+      this.fetchBooks();
+    },
     // 从后端获取分类
     fetchGenres() {
       this.$api.classifyList().then(response => {
         if (response.data.code === 1) {
           console.log(response.data.data);
           this.genres = response.data.data;
+          if (this.genres.length > 0) {
+            // 默认加载第一个类别的书籍
+            this.bookFilter.classifyName = this.genres[0]
+            this.fetchBooks();
+          }
         }
       }).catch(error => console.error('Error fetching genres:', error));
     },
-    // 定义一个方法，用于根据选择的类别从服务器获取书籍
-    fetchBooks(genre) {
-      this.bookFilter.classifyName = genre;
+    // 根据筛选的条件从后端获取书籍
+    fetchBooks() {
+      this.bookFilter.page = this.pages.pageNum - 1
       this.$api.bookList(this.bookFilter).then(response => {
         if (response.data.code === 1) {
           console.log(response.data.data);
           let data = response.data.data
           this.books = data.bookList;
           // 更新总书籍数和总页数
-          this.totalBooks = data.pageInfo.totalCount;
-          this.totalPages = data.pageInfo.totalPages;
-          // 通知分页器进行更新
-          Pagination.changePage(this.totalPages);
+          this.pages.totalBooks = data.pageInfo.totalCount;
+          this.pages.total = data.pageInfo.totalPages;
         }
       }).catch(error => console.error('Error fetching books:', error));
     },
-    handlePageChange(newPage) {
-      // 将页码设置为新页码
-      this.bookFilter.page = newPage.toString();
-      // 重新加载数据
+    // 更新当前页码，当分页器页码变化时触发
+    updateCurrentPage(newPage) {
+      // 通过 @update:currentPage="updateCurrentPage" 监听分页组件触发的事件。当事件触发时，调用 updateCurrentPage 方法，更新当前页码。
+      // 即从子组件进行监听，根据子组件的变化修改父组件上显示的值。
+      console.log("当前页面：", newPage)
+      this.pages.pageNum = newPage
+    }
+  },
+  watch: {
+    // 使用 watch 监听 pages.pageNum 的变化，当页码变化时调用 fetchBooks 方法获取新页码的数据。
+    'pages.pageNum': function () {
       this.fetchBooks();
     }
   },
   // mounted 是一个生命周期钩子，用来在组件的实例被挂载到DOM上之后执行。这是初始化页面数据、发送网络请求或执行其他只有在页面完全加载之后才能进行的操作的理想时机。
   mounted() {
     this.fetchGenres();
-    this.fetchBooks(); // 可以带一个默认分类
   }
 };
 </script>
