@@ -10,7 +10,7 @@
           <span class="book-star"><i class="fas fa-star"></i> {{ book.star }}</span>
           <span class="book-finish-time">完结日期：{{ book.finishTime }}</span>
           <span class="book-size">书籍大小：{{ book.fileSize }}</span>
-          <p class="book-information">{{ book.information }}</p>
+          <span class="book-information">{{ book.information }}</span>
         </div>
       </li>
     </ul>
@@ -40,7 +40,7 @@ export default {
   background-color: #f9f9f9; /* 设置背景颜色 */
 }
 
-/* 当鼠标悬停在书籍项上时的样式 */
+/* 当鼠标悬停在书籍项上时的样式，变成浅蓝色 */
 .book-list li:hover {
   background-color: #e9ecef; /* 修改背景颜色 */
 }
@@ -77,9 +77,20 @@ export default {
 
 /* 设置书籍信息的样式 */
 .book-information {
+  overflow: hidden; /* 隐藏超出长度的部分*/
+  text-overflow: ellipsis; /* 对溢出文本显示省略号*/
+  height: 100px; /* 必须设置元素的宽或者高，才知道它超出什么范围才隐藏*/
+
+  word-wrap: break-word; /* 允许自动换行 */
+  line-height: 20px; /* 设置行高，以控制换行时的间距 */
+
+  /* 添加额外的兼容性前缀 */
+  -moz-box-orient: vertical;
+
   font-size: 14px; /* 设置字体大小 */
   color: #333; /* 设置字体颜色 */
   margin-top: 10px; /* 设置顶部外边距 */
+  display: block;
 }
 </style>
 
