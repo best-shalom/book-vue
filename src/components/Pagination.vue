@@ -57,6 +57,11 @@ export default {
 </script>
 
 <style scoped>
+div {
+  display: flex;
+  justify-content: center;
+}
+
 span {
   margin: 0 5px;
   cursor: pointer;
