@@ -18,10 +18,10 @@
 
 
 <script>
-import Navbar from '../components/Navbar.vue'
-import Sidebar from '../components/Sidebar.vue'
-import BookList from '../components/BookList.vue';
-import Pagination from "@/components/Pagination.vue";
+import Navbar from '../components/home/Navbar.vue'
+import Sidebar from '../components/home/Sidebar.vue'
+import BookList from '../components/common/BookList.vue';
+import Pagination from "@/components/common/Pagination.vue";
 
 export default {
   components: {
