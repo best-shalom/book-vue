@@ -40,5 +40,8 @@ export default {
 </script>
 
 <style scoped>
-/* 可选的组件样式 */
+.book-details {
+  top: 80px;
+  left: 100px;
+}
 </style>

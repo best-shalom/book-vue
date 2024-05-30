@@ -3,7 +3,7 @@
     <nav>
       <ul>
         <li><a href="#">首页</a></li>
-        <li><a href="/">全部</a></li>
+        <li><a href="/public">全部</a></li>
         <li><a href="/rank">排行</a></li>
         <li><a href="/tag">标签</a></li>
         <li><a href="/search">搜索</a></li>

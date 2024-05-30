@@ -3,7 +3,7 @@
     <ul>
       <!-- 循环显示所有书籍 -->
       <li v-for="book in books" :key="book.id" class="book-entry">
-        <router-link :to="'/bookDetails/'+book.id" class="book-title">{{ book.newName }}</router-link>
+        <a class="book-title" target="_blank" @click="showBookDetail(book.id)">{{ book.newName }}</a>
         <div class="book-details">
           <span class="book-tag"><i class="fas fa-tag"></i> {{ book.tag }}</span>
           <!--fas 是 FontAwesome 图标库中表示“实心”图标的样式，而 fa-star 则表示星星图标-->
@@ -21,6 +21,13 @@
 export default {
   props: {
     books: Array // 接受从父组件传递过来的书籍数据
+  },
+  methods: {
+    // 在新页面打开书籍详情
+    showBookDetail(bookId) {
+      // 使用this.$router.push可以在不刷新页面的情况下加载新的组件，即在单页面应用中进行内部路由导航
+      window.open('/bookDetails/' + bookId)
+    }
   }
 };
 </script>

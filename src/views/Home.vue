@@ -18,9 +18,9 @@
 
 
 <script>
-import Navbar from './Navbar.vue'
-import Sidebar from './Sidebar.vue'
-import BookList from './BookList.vue';
+import Navbar from '../components/Navbar.vue'
+import Sidebar from '../components/Sidebar.vue'
+import BookList from '../components/BookList.vue';
 import Pagination from "@/components/Pagination.vue";
 
 export default {
