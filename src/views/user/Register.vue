@@ -5,7 +5,7 @@
     <a-row class="register-main">
       <!--注册左侧的背景容器-->
       <a-col class="back-container">
-        <img alt="注册框背景" src="@/assets/img.png">
+        <img alt="注册框背景" src="../../assets/img.png">
       </a-col>
       <!--注册表单容器-->
       <a-col class="form-container">

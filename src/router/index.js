@@ -9,8 +9,8 @@
 //综上所述，index.js 主要用于配置 Vue Router 的路由表，而 main.js 则是应用的入口文件，用于初始化 Vue 实例和进行一些全局的配置。
 import {createRouter, createWebHistory} from 'vue-router'
 
-import Login from "@/views/Login.vue";
-import Register from "@/views/Register.vue";
+import Login from "@/views/user/Login.vue";
+import Register from "@/views/user/Register.vue";
 import Home from "@/views/Home.vue";
 import BookDetails from "@/views/BookDetails.vue";
 

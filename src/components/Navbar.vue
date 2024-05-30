@@ -2,11 +2,13 @@
   <div>
     <nav>
       <ul>
-        <li><a href="#">首页</a></li>
-        <li><a href="/public">全部</a></li>
+        <li><a href="/home">首页</a></li>
+        <li><a href="/all">全部</a></li>
         <li><a href="/rank">排行</a></li>
         <li><a href="/tag">标签</a></li>
         <li><a href="/search">搜索</a></li>
+        <li><a href="/author">作者</a></li>
+        <li><a href="/type">类型</a></li>
       </ul>
     </nav>
   </div>
