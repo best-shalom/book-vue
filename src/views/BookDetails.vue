@@ -1,6 +1,7 @@
 <template>
   <Navbar/>
   <div class="app">
+    <LeftSide/>
     <BookInfo :bookId="bookId"></BookInfo>
   </div>
 </template>
@@ -8,11 +9,13 @@
 <script>
 import Navbar from '@/components/home/Navbar.vue'
 import BookInfo from "@/components/common/BookInfo.vue";
+import LeftSide from '@/components/book_detail/LeftSide.vue'
 
 export default {
   components: {
     Navbar,
-    BookInfo
+    BookInfo,
+    LeftSide
   },
   // 接收url中传递的bookId，传递给bookInfo子组件
   props: ['bookId']
@@ -20,5 +23,7 @@ export default {
 </script>
 
 <style scoped>
-
+.app {
+  display: flex; /* flex默认就是横向排列*/
+}
 </style>

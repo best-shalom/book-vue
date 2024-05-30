@@ -41,7 +41,8 @@ export default {
 
 <style scoped>
 .book-info {
-  margin-top: 100px;
-  margin-left: 100px;
+  margin-top: 80px;
+  margin-left: 120px;
+  padding: 0;
 }
 </style>
