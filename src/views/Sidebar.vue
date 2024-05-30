@@ -1,8 +1,8 @@
 <template>
   <div>
     <ul>
-      <li v-for="classify in classifyList" :key="classify">
-        <a href="#">{{ classify }}</a>
+      <li v-for="classify in classifies" :key="classify">
+        <a href="#" @click="changeClassify(classify)">{{ classify }}</a>
       </li>
     </ul>
   </div>
@@ -10,12 +10,18 @@
 
 <script>
 export default {
-  data() {
-    return {
-      classifyList: ['言情小说', '玄幻小说']
+  props: {
+    classifies: Array
+  },
+  // 1.声明此组件触发的事件
+  emits: ['update:changeClassify'],
+  methods: {
+    changeClassify(classify) {
+      // 2.触发事件，此事件会通过<Sidebar @update:changeClassify="changeFilter"/>的形式被父组件监听，然后监听到后调用父组件的changeFilter方法，实现分类的切换
+      this.$emit('update:changeClassify', classify)
     }
   }
-}
+};
 </script>
 
 <style scoped>

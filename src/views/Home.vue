@@ -1,7 +1,7 @@
 <template>
   <Navbar/>
   <div class="app">
-    <Sidebar/>
+    <Sidebar :classifies="classifies" @update:changeClassify="changeFilter"/>
     <!-- 使用书籍列表组件，并传递书籍数据 -->
     <BookList :books="books"/>
     <!-- 路由视图 -->
@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       // 后端获取的书籍分类
-      genres: [],
+      classifies: [],
       // 筛选条件
       bookFilter: {
         classifyName: null,
@@ -54,8 +54,10 @@ export default {
     }
   },
   methods: {
-    changeFilter(genre) {
-      this.bookFilter.classifyName = genre;
+    // 监听侧边栏分类的触发事件，更新其传递的分类参数
+    changeFilter(classify) {
+      console.log(classify)
+      this.bookFilter.classifyName = classify;
       // 重置页码到第一页
       this.pages.pageNum = 1
       // 调用 fetchBooks 方法加载新分类的书籍
@@ -66,10 +68,10 @@ export default {
       this.$api.classifyList().then(response => {
         if (response.data.code === 1) {
           console.log(response.data.data);
-          this.genres = response.data.data;
-          if (this.genres.length > 0) {
+          this.classifies = response.data.data;
+          if (this.classifies.length > 0) {
             // 默认加载第一个类别的书籍
-            this.bookFilter.classifyName = this.genres[0]
+            this.bookFilter.classifyName = this.classifies[0]
             this.fetchBooks();
           }
         }
