@@ -26,6 +26,11 @@ export default {
 </script>
 
 <style>
+.book-list {
+  margin-top: 80px;
+  margin-left: 120px;
+}
+
 /* 设置书籍列表的样式 */
 .book-list ul {
   list-style: none; /* 移除列表项的默认样式 */

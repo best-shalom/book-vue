@@ -1,18 +1,16 @@
 <template>
   <Navbar/>
-  <div id="app">
-    <!-- 内容下移，避免被导航栏遮挡 -->
-    <div style="margin-top: 60px;">
-      <!-- 使用书籍列表组件，并传递书籍数据 -->
-      <BookList :books="books"/>
-      <!-- 路由视图 -->
-      <!--分页组件
-      :currentPage="bookFilter.page": 这是一个绑定（binding）语法，将 currentPage 属性绑定到 Vue 实例中的 bookFilter.page 变量上。这表示当前页的值会与 bookFilter.page 变量保持同步，任何时候 bookFilter.page 变化时，currentPage 也会随之更新。
-      :totalPages="totalPages": 同样是一个绑定语法，将 totalPages 属性绑定到 Vue 实例中的 totalPages 变量上。这表示总页数会与 totalPages 变量保持同步，任何时候 totalPages 变化时，totalPages 也会随之更新。
-      在分页器组件中，当页码发生变化时，通过 $emit 触发 update:currentPage 事件，并传递新的页码值给父组件。
-      最后，在父组件中监听分页器组件发出的 update:currentPage 事件，将收到的新页码值更新到父组件的数据中，触发数据更新，从而重新加载对应页的数据。
-      -->
-    </div>
+  <div class="app">
+    <Sidebar/>
+    <!-- 使用书籍列表组件，并传递书籍数据 -->
+    <BookList :books="books"/>
+    <!-- 路由视图 -->
+    <!--分页组件
+    :currentPage="bookFilter.page": 这是一个绑定（binding）语法，将 currentPage 属性绑定到 Vue 实例中的 bookFilter.page 变量上。这表示当前页的值会与 bookFilter.page 变量保持同步，任何时候 bookFilter.page 变化时，currentPage 也会随之更新。
+    :totalPages="totalPages": 同样是一个绑定语法，将 totalPages 属性绑定到 Vue 实例中的 totalPages 变量上。这表示总页数会与 totalPages 变量保持同步，任何时候 totalPages 变化时，totalPages 也会随之更新。
+    在分页器组件中，当页码发生变化时，通过 $emit 触发 update:currentPage 事件，并传递新的页码值给父组件。
+    最后，在父组件中监听分页器组件发出的 update:currentPage 事件，将收到的新页码值更新到父组件的数据中，触发数据更新，从而重新加载对应页的数据。
+    -->
   </div>
   <Pagination :currentPage="this.pages.pageNum" :totalPages="this.pages.total"
               @update:currentPage="updateCurrentPage"/>
@@ -21,12 +19,14 @@
 
 <script>
 import Navbar from './Navbar.vue'
+import Sidebar from './Sidebar.vue'
 import BookList from './BookList.vue';
 import Pagination from "@/components/Pagination.vue";
 
 export default {
   components: {
     Navbar,
+    Sidebar,
     // 注册 BookList 组件
     BookList,
     Pagination
@@ -110,6 +110,10 @@ export default {
 };
 </script>
 <style scoped>
+.app {
+  display: flex; /* app中的侧边栏和书籍列表水平排列*/
+}
+
 nav ul {
   list-style-type: none;
   padding: 0;
