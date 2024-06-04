@@ -41,4 +41,7 @@ export default {
         }
         return http.get('/book/getBookById/', getParam)
     },
+    setBookType(params) {
+        return http.post('/type/setBookType/', params)
+    }
 }

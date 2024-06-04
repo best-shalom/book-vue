@@ -2,19 +2,54 @@
   <!--书籍详情页面：左侧边栏，包括添加评论，修改分类等-->
   <div class="left-side">
     <div class="set-type">
-      <span>设置书籍类型</span>
+      <span @click="showSetTypeDialog">设置书籍类型</span>
     </div>
     <div class="set-commit">
-      <span>添加阅读评论</span>
+      <span @click="showSetCommitDialog">添加阅读评论</span>
     </div>
     <div class="set-classify">
-      <span>修改书籍分类</span>
+      <span @click="showSetClassifyDialog">修改书籍分类</span>
     </div>
-
   </div>
+  <set-book-type :dialogType="dialogType" :visible="isDialogVisible" @close="closeDialog"></set-book-type>
 </template>
 
 <script>
+import setBookType from "@/components/book_detail/SetBookType.vue";
+
+export default {
+  components: {
+    setBookType
+  },
+  props: {
+    bookId: Number
+  },
+  data() {
+    return {
+      isDialogVisible: false,
+      dialogType: ''
+    }
+  },
+  methods: {
+    // 显示设置书籍类型的弹框
+    showSetTypeDialog() {
+      this.isDialogVisible = true
+      this.dialogType = 'setType'
+      console.log(this.dialogType)
+    },
+    showSetCommitDialog() {
+      this.isDialogVisible = true
+      this.dialogType = 'setCommit'
+    },
+    showSetClassifyDialog() {
+      this.isDialogVisible = true
+      this.dialogType = 'setClassify'
+    },
+    closeDialog() {
+      this.isDialogVisible = false
+    }
+  }
+}
 
 </script>
 
@@ -50,5 +85,10 @@
   margin: 0;
   padding: 0;
   width: 100%;
+}
+
+/* 左侧边栏文字悬停样式*/
+.left-side span:hover {
+  text-decoration: underline;
 }
 </style>
