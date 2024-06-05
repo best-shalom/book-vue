@@ -31,7 +31,7 @@ export default {
   props: {
     visible: Boolean,
     dialogType: String,
-    bookId: Number
+    bookId: String
   },
   data() {
     return {
@@ -40,7 +40,6 @@ export default {
       bookType: [],
       setType: {
         chooseType: '',
-        bookId: ''
       },
       addType: {
         name: ''
@@ -50,7 +49,6 @@ export default {
   methods: {
     // 根据父组件中dialogType的值显示不同的弹框
     showDialog() {
-      console.log(this.visible)
       if (this.dialogType === 'setType') {
         this.dialogTitle = '选择书籍类型'
         this.dialogMessage = '选择或创建你想添加的书籍类型'
@@ -64,6 +62,7 @@ export default {
         this.dialogMessage = '请选择书籍分类'
       }
     },
+    // 显示已有的阅读类型
     showBookType() {
       this.$api.typeList().then(response => {
         if (response.data.code === 1) {
@@ -73,31 +72,43 @@ export default {
           response.data.data.forEach(item => {
             this.bookType.push(item.name);
           })
+        } else if (response.data.code === 0) {
+          console.log(response.data.msg)
         }
       }).catch(error => console.error('Error get bookTypeList:', error));
     },
+    // 新增阅读类型
     addBookType() {
-      console.log(this.addType)
       this.$api.addType(this.addType).then(response => {
         if (response.data.code === 1) {
           console.log(response.data.data);
           this.showBookType()
           this.addType.name = ''
+        } else if (response.data.code === 0) {
+          console.log(response.data.msg)
         }
       }).catch(error => console.error('Error addType:', error));
     },
+    // 为书籍设置阅读类型
     setBookType() {
-      const type = this.setType.chooseType
-      const bookId = this.bookId
-      console.log(type, bookId)
-      this.$api.setBookType({type, bookId}).then(response => {
+      const requestData = {
+        'bookId': this.bookId,
+        'typeName': this.setType.chooseType
+      }
+      this.$api.updateBookInfo(requestData).then(response => {
         if (response.data.code === 1) {
           console.log(response.data.data);
+          // 设置阅读类型，点击确定后调用此方法，后端返回成功后触发关闭弹窗
+          this.close()
         }
-      }).catch(error => console.error('Error fetching genres:', error));
+      }).catch(error => console.error('Error setBookType:', error));
+    },
+    close() {
+      this.$emit('close')
     }
   },
   watch: {
+    // 使用 watch 监听 dialogType 的变化，当 dialogType 变化时调用 showDialog 方法，更新弹框的显示。
     dialogType: {
       immediate: true,
       handler() {

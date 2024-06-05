@@ -11,20 +11,22 @@
       <span @click="showSetClassifyDialog">修改书籍分类</span>
     </div>
   </div>
-  <set-book-type :dialogType="dialogType" :visible="isDialogVisible" @close="closeDialog"></set-book-type>
+  <Dialog :book-id="bookId" :dialogType="dialogType" :visible="isDialogVisible" @close="closeDialog"></Dialog>
 </template>
 
 <script>
-import setBookType from "@/components/book_detail/Dialog.vue";
+import Dialog from "@/components/book_detail/Dialog.vue";
 
 export default {
   components: {
-    setBookType
+    Dialog
   },
   props: {
-    bookId: Number
+    bookId: String
   },
   data() {
+    // isDialogVisible会完全顺着Dialog组件和GenericDialog组件的visible属性同步，并且只有在父组件此处才可以修改，
+    // 其他地方只能用，如果想触发修改，只能通过事件触发close，即调用closeDialog方法来实现
     return {
       isDialogVisible: false,
       dialogType: ''
@@ -35,7 +37,7 @@ export default {
     showSetTypeDialog() {
       this.isDialogVisible = true
       this.dialogType = 'setType'
-      console.log(this.dialogType)
+      console.log('书籍id数据类型', typeof this.bookId)
     },
     showSetCommitDialog() {
       this.isDialogVisible = true

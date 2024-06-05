@@ -1,8 +1,8 @@
 <template>
   <Navbar/>
   <div class="app">
-    <LeftSide/>
-    <BookInfo :bookId="bookId"></BookInfo>
+    <LeftSide :book-id="bookId"/>
+    <BookInfo :bookId="bookId"/>
   </div>
 </template>
 
@@ -17,7 +17,7 @@ export default {
     BookInfo,
     LeftSide
   },
-  // 接收url中传递的bookId，传递给bookInfo子组件
+  // 接收url中传递的bookId，传递给bookInfo子组件和leftSide子组件
   props: ['bookId']
 }
 </script>

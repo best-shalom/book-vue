@@ -41,14 +41,13 @@ export default {
         }
         return http.get('/book/getBookById/', getParam)
     },
+    updateBookInfo(params) {
+        return http.post('/book/updateBookInfo/', params)
+    },
     typeList() {
         return http.get('/type/list/')
     },
     addType(params) {
         return http.post('/type/add/', params)
-    },
-    setBookType(params) {
-        return http.post('/type/setBookType/', params)
     }
-
 }

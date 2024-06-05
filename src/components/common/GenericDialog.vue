@@ -7,7 +7,7 @@
       <p>{{ message }}</p>
       <!-- 插槽用于插入不同的内容 -->
       <slot></slot>
-      <button @click="closeDialog">X</button>
+      <button @click="close">X</button>
     </div>
   </div>
 </template>
@@ -21,11 +21,9 @@ export default {
     visible: Boolean
   },
   methods: {
-    // 额这里不清楚，在调用CenericDialog时没有@close事件，不知道这里在干什么，但是删除了就关不掉
-    // 貌似是在一路监听从LeftSide组件中传递的visible，然后监听它close事件，然后调用它的close方法，关闭弹框。
+    // 一路监听从LeftSide组件中传递的visible，然后使用this.$emit('close')触发父组件LeftSide的close方法，关闭弹框。
     // 因为中间如果没有连着props visible的话会失效（例如在setBookType中自定义isVisible作为新的参数传递给这里的话，就会无法关闭）
-    closeDialog() {
-      console.log(this.visible)
+    close() {
       this.$emit('close')
     }
   }
