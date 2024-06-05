@@ -24,8 +24,8 @@ export default {
     bookList(params) {
         return http.post('/book/listBooks/', params)
     },
-    classifyList(params) {
-        return http.get('/classify/showAllName/', params)
+    classifyList() {
+        return http.get('/classify/showAllName/')
     },
     bookDetail(params) {
         // 在 Axios 中，GET 请求的参数应该作为配置对象的一个属性，而不是直接传递给 get 方法
@@ -41,7 +41,14 @@ export default {
         }
         return http.get('/book/getBookById/', getParam)
     },
+    typeList() {
+        return http.get('/type/list/')
+    },
+    addType(params) {
+        return http.post('/type/add/', params)
+    },
     setBookType(params) {
         return http.post('/type/setBookType/', params)
     }
+
 }

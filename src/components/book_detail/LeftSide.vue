@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import setBookType from "@/components/book_detail/SetBookType.vue";
+import setBookType from "@/components/book_detail/Dialog.vue";
 
 export default {
   components: {

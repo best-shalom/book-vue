@@ -11,7 +11,7 @@
           </label>
         </div>
         <!--新增类型暂时用输入框表示-->
-        <input v-model="addType.newType" placeholder="新增类型" type="text">
+        <input v-model="addType.name" placeholder="新增类型" type="text">
         <button type="button" @click="addBookType">添加类型</button>
         <button type="submit">确定</button>
       </form>
@@ -37,13 +37,13 @@ export default {
     return {
       dialogTitle: '',
       dialogMessage: '',
-      bookType: ['好看', '精彩', '难看'],
+      bookType: [],
       setType: {
         chooseType: '',
         bookId: ''
       },
       addType: {
-        newType: ''
+        name: ''
       }
     }
   },
@@ -64,6 +64,28 @@ export default {
         this.dialogMessage = '请选择书籍分类'
       }
     },
+    showBookType() {
+      this.$api.typeList().then(response => {
+        if (response.data.code === 1) {
+          // 清空bookType列表
+          this.bookType = []
+          // 遍历后端数据将name整合到bookType列表
+          response.data.data.forEach(item => {
+            this.bookType.push(item.name);
+          })
+        }
+      }).catch(error => console.error('Error get bookTypeList:', error));
+    },
+    addBookType() {
+      console.log(this.addType)
+      this.$api.addType(this.addType).then(response => {
+        if (response.data.code === 1) {
+          console.log(response.data.data);
+          this.showBookType()
+          this.addType.name = ''
+        }
+      }).catch(error => console.error('Error addType:', error));
+    },
     setBookType() {
       const type = this.setType.chooseType
       const bookId = this.bookId
@@ -73,9 +95,6 @@ export default {
           console.log(response.data.data);
         }
       }).catch(error => console.error('Error fetching genres:', error));
-    },
-    addBookType() {
-      this.bookType.push(this.addType.newType)
     }
   },
   watch: {
@@ -85,6 +104,9 @@ export default {
         this.showDialog();
       }
     }
+  },
+  mounted() {
+    this.showBookType()
   },
 }
 </script>
