@@ -1,4 +1,6 @@
 <template>
+  <!--ref 属性在 Vue.js 中用于引用组件实例或 DOM 元素。你可以使用 ref 属性给一个组件或元素赋予一个引用名称，然后通过 this.$refs 访问该引用。-->
+  <Alert ref="alert"/>
   <!--  弹框组件，通过参数和方法控制组件的显示和关闭-->
   <generic-dialog :message="dialogMessage" :title="dialogTitle" :visible="visible">
     <template v-if="dialogType === 'setType'">
@@ -23,10 +25,12 @@
 
 <script>
 import GenericDialog from "@/components/common/GenericDialog.vue";
+import Alert from "@/components/common/Alert.vue"
 
 export default {
   components: {
-    GenericDialog
+    GenericDialog,
+    Alert
   },
   props: {
     visible: Boolean,
@@ -72,8 +76,8 @@ export default {
           response.data.data.forEach(item => {
             this.bookType.push(item.name);
           })
-        } else if (response.data.code === 0) {
-          console.log(response.data.msg)
+        } else {
+          this.$refs.alert.showAlert(response.data.msg)
         }
       }).catch(error => console.error('Error get bookTypeList:', error));
     },
@@ -84,8 +88,9 @@ export default {
           console.log(response.data.data);
           this.showBookType()
           this.addType.name = ''
-        } else if (response.data.code === 0) {
-          console.log(response.data.msg)
+        } else {
+          console.log(response.data.msg);
+          this.$refs.alert.showAlert(response.data.msg)
         }
       }).catch(error => console.error('Error addType:', error));
     },
