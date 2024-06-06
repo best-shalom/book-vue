@@ -65,7 +65,7 @@ export default {
     },
     // 从后端获取分类
     fetchGenres() {
-      this.$api.classifyList().then(response => {
+      this.$api.classify.classifyList().then(response => {
         if (response.data.code === 1) {
           console.log(response.data.data);
           this.classifies = response.data.data;
@@ -80,7 +80,7 @@ export default {
     // 根据筛选的条件从后端获取书籍
     fetchBooks() {
       this.bookFilter.page = this.pages.pageNum - 1
-      this.$api.bookList(this.bookFilter).then(response => {
+      this.$api.book.bookList(this.bookFilter).then(response => {
         if (response.data.code === 1) {
           console.log(response.data.data);
           let data = response.data.data

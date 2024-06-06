@@ -1,12 +1,12 @@
 // 配置路由表，即定义每个 URL 路径与对应组件的映射关系。
-//一、index.js：通常位于 src 目录下，是一个路由配置文件。在 Vue Router 中，index.js 文件用于定义应用的路由表，即指定每个 URL 路径与对应组件的映射关系。
+//一、api.js：通常位于 src 目录下，是一个路由配置文件。在 Vue Router 中，api.js 文件用于定义应用的路由表，即指定每个 URL 路径与对应组件的映射关系。
 // 这个文件主要负责配置路由，并创建 Vue Router 实例，最后将实例导出供其他组件使用。
 // 一般情况下，你需要在这里引入 Vue Router、定义路由规则，并创建一个新的 Vue Router 实例。
 
 //二、main.js：也位于 src 目录下，是应用的入口文件。在 Vue.js 应用中，main.js 负责初始化 Vue 实例，并将根组件渲染到指定的 DOM 元素中。
 // 在 main.js 文件中，你需要引入 Vue、创建根组件，并在 Vue 实例中指定根组件以及挂载的 DOM 元素。
 // 此外，main.js 也用于引入其他插件或库，配置全局设置，以及注册全局组件、指令等。
-//综上所述，index.js 主要用于配置 Vue Router 的路由表，而 main.js 则是应用的入口文件，用于初始化 Vue 实例和进行一些全局的配置。
+//综上所述，api.js 主要用于配置 Vue Router 的路由表，而 main.js 则是应用的入口文件，用于初始化 Vue 实例和进行一些全局的配置。
 import {createRouter, createWebHistory} from 'vue-router'
 
 import Login from "@/views/user/Login.vue";

@@ -117,7 +117,7 @@ export default {
         // 使用 then 方法处理返回的 Promise 对象。
         // 在 then 方法中，我们从 response 对象中读取了 status 和 data 属性，分别表示响应状态码和响应数据。
         // response => { } 是作为 then 方法的回调函数传递的。当 Promise 对象被成功解析后，即请求成功时，该回调函数会被调用，并将响应对象作为参数传递给它。你可以在这个回调函数中编写处理响应的逻辑。
-        this.$api.login(params).then(response => {
+        this.$api.user.login(params).then(response => {
           if (response.data.code === 0) {
             // 如果验证失败，则显示错误信息
             console.log(response.data.msg)

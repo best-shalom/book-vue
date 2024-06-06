@@ -1,7 +1,7 @@
 import {createApp} from 'vue'
 import App from './App.vue'
 import router from '@/router/index.js'
-import api from '@/api/index'
+import api from '@/api/api'
 // 引入全局样式文件
 import './global.css'
 

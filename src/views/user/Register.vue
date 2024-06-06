@@ -71,7 +71,7 @@ export default {
           password: this.registerForm.password
         }
         console.log(params)
-        this.$api.register(params).then(response => {
+        this.$api.user.register(params).then(response => {
           if (response.data.code === 0) {
             this.error = response.data.msg
             this.showAlert = true

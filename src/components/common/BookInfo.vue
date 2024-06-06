@@ -25,7 +25,7 @@ export default {
       const requestData = {
         id: this.bookId
       };
-      this.$api.bookDetail(requestData).then(response => {
+      this.$api.book.bookDetail(requestData).then(response => {
         console.log(response.data);
         if (response.data.code === 1) {
           this.book = response.data.data;

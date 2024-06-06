@@ -81,7 +81,7 @@ export default {
     },
     // 显示已有的阅读类型
     showBookType() {
-      this.$api.typeList().then(response => {
+      this.$api.type.typeList().then(response => {
         if (response.data.code === 1) {
           // 清空bookType列表
           this.bookType = []
@@ -96,7 +96,7 @@ export default {
     },
     // 新增阅读类型
     addBookType() {
-      this.$api.addType(this.addType).then(response => {
+      this.$api.type.addType(this.addType).then(response => {
         if (response.data.code === 1) {
           console.log(response.data.data);
           this.showBookType()
@@ -113,7 +113,7 @@ export default {
         'bookId': this.bookId,
         'typeName': this.setType.chooseType
       }
-      this.$api.updateBookInfo(requestData).then(response => {
+      this.$api.book.updateBookInfo(requestData).then(response => {
         if (response.data.code === 1) {
           console.log(response.data.data);
           // 设置阅读类型，点击确定后调用此方法，后端返回成功后触发关闭弹窗
@@ -126,7 +126,7 @@ export default {
         'bookId': this.bookId,
         'evaluate': this.setEvaluate.evaluate
       }
-      this.$api.updateBookInfo(requestData).then(response => {
+      this.$api.book.updateBookInfo(requestData).then(response => {
         if (response.data.code === 1) {
           this.closeDialog()
           window.location.reload()
