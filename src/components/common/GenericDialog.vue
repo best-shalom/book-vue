@@ -7,7 +7,7 @@
       <p>{{ message }}</p>
       <!-- 插槽用于插入不同的内容 -->
       <slot></slot>
-      <button @click="close">X</button>
+      <button @click="closeDialog">X</button>
     </div>
   </div>
 </template>
@@ -20,10 +20,12 @@ export default {
     message: String,
     visible: Boolean
   },
+  // 使用 emits 选项来显式地声明组件所支持的自定义事件
+  emits: ['close'],
   methods: {
-    // 一路监听从LeftSide组件中传递的visible，然后使用this.$emit('close')触发父组件LeftSide的close方法，关闭弹框。
-    // 因为中间如果没有连着props visible的话会失效（例如在setBookType中自定义isVisible作为新的参数传递给这里的话，就会无法关闭）
-    close() {
+    // 这里直接用this.$emit('close')就不行了，因为它的父组件是上面说的中间件，也是就它的this.$emit('close')不是对应最开始的父组件监听的close事件，而是上面中间件监听的close事件。
+    closeDialog() {
+      console.log("点击关闭")
       this.$emit('close')
     }
   }

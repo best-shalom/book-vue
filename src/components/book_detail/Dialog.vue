@@ -2,7 +2,7 @@
   <!--ref 属性在 Vue.js 中用于引用组件实例或 DOM 元素。你可以使用 ref 属性给一个组件或元素赋予一个引用名称，然后通过 this.$refs 访问该引用。-->
   <Alert ref="alert"/>
   <!--  弹框组件，通过参数和方法控制组件的显示和关闭-->
-  <generic-dialog :message="dialogMessage" :title="dialogTitle" :visible="visible">
+  <generic-dialog :message="dialogMessage" :title="dialogTitle" :visible="visible" @close="closeDialog">
     <template v-if="dialogType === 'setType'">
       <!--@submit表示监听表单提交事件，prevent修饰符表示阻止默认的表单提交行为。当表单提交时会调用setBookType-->
       <form @submit.prevent="setBookType">
@@ -37,6 +37,7 @@ export default {
     dialogType: String,
     bookId: String
   },
+  emits: ['close'],
   data() {
     return {
       dialogTitle: '',
@@ -104,11 +105,11 @@ export default {
         if (response.data.code === 1) {
           console.log(response.data.data);
           // 设置阅读类型，点击确定后调用此方法，后端返回成功后触发关闭弹窗
-          this.close()
+          this.closeDialog()
         }
       }).catch(error => console.error('Error setBookType:', error));
     },
-    close() {
+    closeDialog() {
       this.$emit('close')
     }
   },

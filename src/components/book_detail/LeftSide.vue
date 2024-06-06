@@ -48,6 +48,7 @@ export default {
       this.dialogType = 'setClassify'
     },
     closeDialog() {
+      console.log("触发关闭")
       this.isDialogVisible = false
     }
   }
