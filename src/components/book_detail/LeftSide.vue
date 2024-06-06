@@ -4,8 +4,8 @@
     <div class="set-type">
       <span @click="showSetTypeDialog">设置书籍类型</span>
     </div>
-    <div class="set-commit">
-      <span @click="showSetCommitDialog">添加阅读评论</span>
+    <div class="set-evaluate">
+      <span @click="showSetEvaluateDialog">设置我的评价</span>
     </div>
     <div class="set-classify">
       <span @click="showSetClassifyDialog">修改书籍分类</span>
@@ -39,9 +39,9 @@ export default {
       this.dialogType = 'setType'
       console.log('书籍id数据类型', typeof this.bookId)
     },
-    showSetCommitDialog() {
+    showSetEvaluateDialog() {
       this.isDialogVisible = true
-      this.dialogType = 'setCommit'
+      this.dialogType = 'setEvaluate'
     },
     showSetClassifyDialog() {
       this.isDialogVisible = true

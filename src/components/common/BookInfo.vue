@@ -4,6 +4,7 @@
     <p>标签: {{ book.tag }}</p>
     <p>星级: {{ book.star }}</p>
     <p>完结时间：{{ book.finishTime }}</p>
+    <p>我的评价：{{ book.evaluate }}</p>
     <p>简介：{{ book.information }}</p>
     <p>大小：{{ book.fileSize }}</p>
     <p>下载：{{ book.downUrl }}</p>

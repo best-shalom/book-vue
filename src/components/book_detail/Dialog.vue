@@ -4,7 +4,7 @@
   <!--  弹框组件，通过参数和方法控制组件的显示和关闭-->
   <generic-dialog :message="dialogMessage" :title="dialogTitle" :visible="visible" @close="closeDialog">
     <template v-if="dialogType === 'setType'">
-      <!--@submit表示监听表单提交事件，prevent修饰符表示阻止默认的表单提交行为。当表单提交时会调用setBookType-->
+      <!--@submit表示监听表单提交事件，prevent修饰符表示阻止默认的表单提交行为，而是设置当表单提交时会调用setBookType-->
       <form @submit.prevent="setBookType">
         <div v-for="type in bookType" :key="type">
           <!--将分类列表中的选择的值绑定到setType.chooseType上-->
@@ -18,6 +18,12 @@
         <button type="submit">确定</button>
       </form>
 
+    </template>
+    <template v-if="dialogType==='setEvaluate'">
+      <form @submit.prevent="setBookEvaluate">
+        <input v-model="setEvaluate.evaluate" placeholder="我的评价" type="text">
+        <button type="submit">确定</button>
+      </form>
     </template>
 
   </generic-dialog>
@@ -48,6 +54,9 @@ export default {
       },
       addType: {
         name: ''
+      },
+      setEvaluate: {
+        evaluate: ''
       }
     }
   },
@@ -58,14 +67,17 @@ export default {
         this.dialogTitle = '选择书籍类型'
         this.dialogMessage = '选择或创建你想添加的书籍类型'
       }
-      if (this.dialogType === 'setCommit') {
-        this.dialogTitle = '设置书籍评论'
-        this.dialogMessage = '请输入书籍评论'
+      if (this.dialogType === 'setEvaluate') {
+        this.dialogTitle = '设置我的评价'
+        this.dialogMessage = '输入评价'
       }
       if (this.dialogType === 'setClassify') {
         this.dialogTitle = '设置书籍分类'
         this.dialogMessage = '请选择书籍分类'
       }
+    },
+    closeDialog() {
+      this.$emit('close')
     },
     // 显示已有的阅读类型
     showBookType() {
@@ -109,8 +121,17 @@ export default {
         }
       }).catch(error => console.error('Error setBookType:', error));
     },
-    closeDialog() {
-      this.$emit('close')
+    setBookEvaluate() {
+      const requestData = {
+        'bookId': this.bookId,
+        'evaluate': this.setEvaluate.evaluate
+      }
+      this.$api.updateBookInfo(requestData).then(response => {
+        if (response.data.code === 1) {
+          this.closeDialog()
+          window.location.reload()
+        }
+      }).catch(error => console.error('Error setBookEvaluate:', error))
     }
   },
   watch: {
