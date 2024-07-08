@@ -28,7 +28,7 @@
             <!--在没有为表单项配置width的情况下，输入框的长度会自动根据span的长度进行匹配
             即：相比于”密码“，”确认密码“四个字会使a-input-password自动变长，对于的form容器整个也会变宽-->
             <span class="gray">确认密码</span>
-            <a-input-password/>
+            <a-input-password v-model:value="registerForm.rePassword"/>
           </a-form-item>
           <!--注册按钮-->
           <a-form-item>
@@ -41,20 +41,25 @@
       </a-col>
     </a-row>
     <a-alert v-if="showAlert" :message="'注册失败：'+error" closable type="warning" @close="showAlert=false"/>
+    <Alert/>
   </div>
 </template>
 
 <script>
 // 导出模块为一整个默认的对象，通过 import 语句可以将该对象导入为默认导出项
 import router from "@/router";
+import Alert from "@/components/common/Alert.vue";
+import {eventBus} from "@/main";
 
 export default {
+  components: {Alert},
   data() {
     return {
       // 注册表单数据
       registerForm: {
         account: '',
         password: '',
+        rePassword: ''
       },
       error: '',
       loading: false,
@@ -64,26 +69,28 @@ export default {
   methods: {
     register() {
       try {
-        console.log('注册')
         this.loading = true
+        if (this.registerForm.password !== this.registerForm.rePassword) {
+          eventBus.emit('show-alert', '两次密码不一致')
+          return
+        }
         const params = {
           account: this.registerForm.account,
           password: this.registerForm.password
         }
-        console.log(params)
-        this.$api.user.register(params).then(data => {
-          console.log(data.msg)
+        this.$api.user.register(params).then(() => {
           router.push('/home')
         })
-      } catch (error) {
-        this.error = "异常错误"
-        this.showAlert = true
       } finally {
-        this.loading = false
+        this.loading = false;
+        // 清空输入框
+        this.registerForm.account = '';
+        this.registerForm.password = '';
+        this.registerForm.rePassword = '';
       }
     }
   }
-}
+};
 </script>
 
 

@@ -81,28 +81,21 @@ export default {
     },
     // 显示已有的阅读类型
     showBookType() {
-      this.$api.type.typeList().then(data => {
-            // 清空bookType列表
-            this.bookType = []
-            // 遍历后端数据将name整合到bookType列表
-            data.data.forEach(item => {
-              this.bookType.push(item.name);
-            })
-          }
-      )
+      this.$api.type.typeList().then(responseData => {
+        // 清空bookType列表
+        this.bookType = []
+        // 遍历后端数据将name整合到bookType列表
+        responseData.data.forEach(item => {
+          this.bookType.push(item.name);
+        })
+      })
     },
     // 新增阅读类型
     addBookType() {
-      this.$api.type.addType(this.addType).then(response => {
-        if (response.data.code === 1) {
-          console.log(response.data.data);
-          this.showBookType()
-          this.addType.name = ''
-        } else {
-          console.log(response.data.msg);
-          this.$refs.alert.showAlert(response.data.msg)
-        }
-      }).catch(error => console.error('Error addType:', error));
+      this.$api.type.addType(this.addType).then(() => {
+        this.showBookType()
+        this.addType.name = ''
+      })
     },
     // 为书籍设置阅读类型
     setBookType() {
@@ -110,39 +103,28 @@ export default {
         'bookId': this.bookId,
         'typeName': this.setType.chooseType
       }
-      this.$api.book.updateBookInfo(requestData).then(response => {
-        if (response.data.code === 1) {
-          console.log(response.data.data);
-          // 设置阅读类型，点击确定后调用此方法，后端返回成功后触发关闭弹窗
-          this.closeDialog()
-        }
-      }).catch(error => console.error('Error setBookType:', error));
+      this.$api.book.updateBookInfo(requestData).then(() => {
+        // 设置阅读类型，点击确定后调用此方法，后端返回成功后触发关闭弹窗
+        this.closeDialog()
+      })
     },
     setBookEvaluate() {
       const requestData = {
         'bookId': this.bookId,
         'evaluate': this.setEvaluate.evaluate
       }
-      this.$api.book.updateBookInfo(requestData).then(response => {
-        if (response.data.code === 1) {
-          this.closeDialog()
-          window.location.reload()
-        }
-      }).catch(error => console.error('Error setBookEvaluate:', error))
+      this.$api.book.updateBookInfo(requestData).then(() => {
+        this.closeDialog()
+        window.location.reload()
+      })
     }
   },
   watch: {
     // 使用 watch 监听 dialogType 的变化，当 dialogType 变化时调用 showDialog 方法，更新弹框的显示。
     dialogType: {
-      immediate: true,
-      handler() {
-        this.showDialog();
-      }
+      immediate: true
     }
-  },
-  mounted() {
-    this.showBookType()
-  },
+  }
 }
 </script>
 

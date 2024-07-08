@@ -15,7 +15,7 @@ export default {
     const alertMessage = ref(''); // 用于存储警报消息
 
     // 打印此时Alert是否被注册到DOM中，只有注册到DOM才会在事件总线中监听show-alert
-    console.log("alert触发：", eventBus)
+    console.log("动作:alert注册", eventBus)
 
     // 定义显示警报的方法
     const showAlert = (message) => {
@@ -28,7 +28,6 @@ export default {
     };
     // 组件挂载时，注册事件监听器
     onMounted(() => {
-      console.log('Received show-alert event');
       eventBus.on('show-alert', showAlert);
     });
 

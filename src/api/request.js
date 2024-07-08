@@ -17,12 +17,10 @@ const http = axios.create({
 // 配置http请求拦截器
 http.interceptors.request.use(
     config => {
-        console.log('Request Interceptor')
         // 拦截器需要返回 config 对象，以继续发送请求。如果不返回 config 对象，请求将不会发送。
         return config
     },
     error => {
-        console.log('Request Interceptor Error', error)
         // 会返回一个被拒绝的 Promise，以便在请求调用链中捕获并处理这个错误。
         return Promise.reject(error)
     }
@@ -33,15 +31,17 @@ http.interceptors.response.use(
     response => {
         // 请求成功直接返回响应的data，失败or报错则弹出错误提示框
         const data = response.data
+        console.log('响应参数:', data)
         if (data && data.code === 1) {
             return data
         } else {
-            console.log(eventBus)
             if (eventBus) {
                 const message = data && data.msg ? data.msg : '未知错误';
                 console.log(message)
                 // 使用全局事件总线,触发总线中的show-alert事件
                 eventBus.emit('show-alert', message)
+                // 返回 Promise.reject 以停止后续的代码执行
+                return Promise.reject(new Error(message));
             }
         }
     },

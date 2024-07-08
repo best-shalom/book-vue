@@ -65,31 +65,25 @@ export default {
     },
     // 从后端获取分类
     fetchGenres() {
-      this.$api.classify.classifyList().then(response => {
-        if (response.data.code === 1) {
-          console.log(response.data.data);
-          this.classifies = response.data.data;
-          if (this.classifies.length > 0) {
-            // 默认加载第一个类别的书籍
-            this.bookFilter.classifyName = this.classifies[0]
-            this.fetchBooks();
-          }
+      this.$api.classify.classifyList().then(responseData => {
+        this.classifies = responseData.data;
+        if (this.classifies.length > 0) {
+          // 默认加载第一个类别的书籍
+          this.bookFilter.classifyName = this.classifies[0]
+          this.fetchBooks();
         }
-      }).catch(error => console.error('Error fetching genres:', error));
+      })
     },
     // 根据筛选的条件从后端获取书籍
     fetchBooks() {
       this.bookFilter.page = this.pages.pageNum - 1
-      this.$api.book.bookList(this.bookFilter).then(response => {
-        if (response.data.code === 1) {
-          console.log(response.data.data);
-          let data = response.data.data
-          this.books = data.bookList;
-          // 更新总书籍数和总页数
-          this.pages.totalBooks = data.pageInfo.totalCount;
-          this.pages.total = data.pageInfo.totalPages;
-        }
-      }).catch(error => console.error('Error fetching books:', error));
+      this.$api.book.bookList(this.bookFilter).then(responseData => {
+        let data = responseData.data
+        this.books = data.bookList;
+        // 更新总书籍数和总页数
+        this.pages.totalBooks = data.pageInfo.totalCount;
+        this.pages.total = data.pageInfo.totalPages;
+      })
     },
     // 更新当前页码，当分页器页码变化时触发
     updateCurrentPage(newPage) {

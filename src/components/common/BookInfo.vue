@@ -25,8 +25,8 @@ export default {
       const requestData = {
         id: this.bookId
       };
-      this.$api.book.bookDetail(requestData).then(data => {
-        this.book = data.data;
+      this.$api.book.bookDetail(requestData).then(responseData => {
+        this.book = responseData.data;
         console.log(this.book)
       })
     }

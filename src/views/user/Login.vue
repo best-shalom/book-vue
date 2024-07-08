@@ -108,8 +108,8 @@ export default {
     // async: 在函数声明时加上 async 关键字，表示该函数是一个异步函数，即该函数内部可能包含异步操作。
     // await: 在异步函数内部，可以使用 await 关键字来等待一个 Promise 对象完成，并返回其结果。在遇到 await 的地方，代码会暂停执行，直到 Promise 完成或拒绝。
     async login() {
-      // 实际的请求 URL 将会是 http://localhost:8080/api/user/login，由代理转发到后端的 /user/login 接口
       try {
+        // 实际的请求 URL 将会是 http://localhost:8080/api/user/login，由代理转发到后端的 /user/login 接口
         console.log('登录')
         // 当用户点击登录按钮时，在调用登录方法之前，将 loading 设置为 true，以使按钮进入加载状态。然后，在异步请求完成后，无论是成功还是失败，都将 loading 设置为 false，以结束加载状态。
         this.loading = true
@@ -123,16 +123,14 @@ export default {
         // 使用 then 方法处理返回的 Promise 对象。
         // 在 then 方法中，我们从 response 对象中读取了 status 和 data 属性，分别表示响应状态码和响应数据。
         // response => { } 是作为 then 方法的回调函数传递的。当 Promise 对象被成功解析后，即请求成功时，该回调函数会被调用，并将响应对象作为参数传递给它。你可以在这个回调函数中编写处理响应的逻辑。
-        this.$api.user.login(params).then(data => {
-          console.log(data.msg)
+        this.$api.user.login(params).then(() => {
           router.push('/home')
         })
-      } catch (error) {
-        this.error = "异常错误"
-        this.showAlert = true
       } finally {
-        // 结束加载
-        this.loading = false
+        this.loading = false;
+        // 清空输入框
+        this.loginForm.account = '';
+        this.loginForm.password = '';
       }
     }
   }
