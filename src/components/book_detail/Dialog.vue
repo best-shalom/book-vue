@@ -108,6 +108,7 @@ export default {
         this.closeDialog()
       })
     },
+    // 为书籍设置我的评价
     setBookEvaluate() {
       const requestData = {
         'bookId': this.bookId,
@@ -122,8 +123,14 @@ export default {
   watch: {
     // 使用 watch 监听 dialogType 的变化，当 dialogType 变化时调用 showDialog 方法，更新弹框的显示。
     dialogType: {
-      immediate: true
+      immediate: true,
+      handler() {
+        this.showDialog();
+      }
     }
+  },
+  mounted() {
+    this.showBookType()
   }
 }
 </script>

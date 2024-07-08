@@ -27,7 +27,6 @@ export default {
       };
       this.$api.book.bookDetail(requestData).then(responseData => {
         this.book = responseData.data;
-        console.log(this.book)
       })
     }
   },
