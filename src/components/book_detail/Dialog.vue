@@ -25,6 +25,18 @@
         <button type="submit">确定</button>
       </form>
     </template>
+    <template v-if="dialogType==='setClassify'">
+      <form @submit.prevent="setBookClassify">
+        <div v-for="classify in bookClassify" :key="classify">
+          <label>
+            <input v-model="setClassify.chooseClassify" :value="classify" type="radio">{{ classify }}
+          </label>
+        </div>
+        <input v-model="addClassify.name" placeholder="新增分类" type="text">
+        <button type="button" @click="addBookClassify">添加分类</button>
+        <button type="submit">确定</button>
+      </form>
+    </template>
 
   </generic-dialog>
 </template>
@@ -49,6 +61,7 @@ export default {
       dialogTitle: '',
       dialogMessage: '',
       bookType: [],
+      bookClassify: [],
       setType: {
         chooseType: '',
       },
@@ -57,6 +70,12 @@ export default {
       },
       setEvaluate: {
         evaluate: ''
+      },
+      setClassify: {
+        chooseClassify: ''
+      },
+      addClassify: {
+        name: ''
       }
     }
   },
@@ -118,6 +137,35 @@ export default {
         this.closeDialog()
         window.location.reload()
       })
+    },
+    // 显示已有的书籍分类
+    showBookClassify() {
+      this.$api.classify.classifyList().then(responseData => {
+        // 清空列表
+        this.bookClassify = []
+        // 遍历后端数据将name整合到bookClassify列表
+        console.log(responseData.data)
+        responseData.data.forEach(item => {
+          this.bookClassify.push(item);
+        })
+      })
+    },
+    // 新增书籍分类
+    addBookClassify() {
+      this.$api.classify.addClassify(this.addClassify).then(() => {
+        this.showBookClassify()
+        this.addClassify.name = ''
+      })
+    },
+    // 为书籍设置书籍分类
+    setBookClassify() {
+      const requestData = {
+        'bookId': this.bookId,
+        'classifyName': this.setClassify.chooseClassify
+      }
+      this.$api.book.updateBookInfo(requestData).then(() => {
+        this.closeDialog()
+      })
     }
   },
   watch: {
@@ -130,7 +178,9 @@ export default {
     }
   },
   mounted() {
+    // 组件挂载完成后调用 showBookType和showBookClassify方法，显示已有的数据。
     this.showBookType()
+    this.showBookClassify()
   }
 }
 </script>

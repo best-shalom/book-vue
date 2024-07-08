@@ -27,6 +27,9 @@ const api = {
     classify: {
         classifyList() {
             return request('get', '/classify/showAllName/')
+        },
+        addClassify(data) {
+            return request('post', '/classify/add/', data)
         }
     },
     type: {
