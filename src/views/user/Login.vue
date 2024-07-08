@@ -64,6 +64,12 @@
     <a-alert v-if="showAlert" :message="'登录失败：'+error" class="alert alert-warning" closable
              type="warning"
              @close="showAlert=false"/>
+    <!--在 App.vue 或其他主组件的模板中，使用 <Alert /> 标签或者通过动态组件引入，确保警告框（alert）组件能够被正确添加到DOM中
+    目前在request.js中无法让Alert被注册，那它就无法mount，eventBus就无法监听show-alert事件，
+    全局事件总线中监听不到show-alert事件，那在使用eventBus.emit('show-alert', message)时，
+    就缺少show-alert事件从而报错 Cannot read properties of undefined (reading 'msg')，无法触发报错弹框。
+    而在Login.vue中，Alert组件被注册，所以此时的DOM中就挂载了Alert组件，可以监听show-alert事件，从而显示报错弹框。-->
+    <Alert/>
   </div>
 </template>
 
@@ -117,18 +123,10 @@ export default {
         // 使用 then 方法处理返回的 Promise 对象。
         // 在 then 方法中，我们从 response 对象中读取了 status 和 data 属性，分别表示响应状态码和响应数据。
         // response => { } 是作为 then 方法的回调函数传递的。当 Promise 对象被成功解析后，即请求成功时，该回调函数会被调用，并将响应对象作为参数传递给它。你可以在这个回调函数中编写处理响应的逻辑。
-        this.$api.user.login(params).then(response => {
-          if (response.data.code === 0) {
-            // 如果验证失败，则显示错误信息
-            console.log(response.data.msg)
-            this.error = response.data.msg
-            this.showAlert = true
-          } else {
-            console.log(response.data.msg)
-            router.push('/home')
-          }
+        this.$api.user.login(params).then(data => {
+          console.log(data.msg)
+          router.push('/home')
         })
-
       } catch (error) {
         this.error = "异常错误"
         this.showAlert = true

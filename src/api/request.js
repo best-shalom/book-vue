@@ -1,5 +1,6 @@
 // 封装请求方式
 import axios from "axios";
+import {eventBus} from '@/main'; // 导入全局事件总线
 
 // 使用axios创建实例进行相关的配置和封装(适用于微服务的架构)
 const http = axios.create({
@@ -12,6 +13,45 @@ const http = axios.create({
         'Content-Type': 'application/x-www-form-urlencoded'
     }
 })
+
+// 配置http请求拦截器
+http.interceptors.request.use(
+    config => {
+        console.log('Request Interceptor')
+        // 拦截器需要返回 config 对象，以继续发送请求。如果不返回 config 对象，请求将不会发送。
+        return config
+    },
+    error => {
+        console.log('Request Interceptor Error', error)
+        // 会返回一个被拒绝的 Promise，以便在请求调用链中捕获并处理这个错误。
+        return Promise.reject(error)
+    }
+)
+
+// 配置http响应拦截器
+http.interceptors.response.use(
+    response => {
+        // 请求成功直接返回响应的data，失败or报错则弹出错误提示框
+        const data = response.data
+        if (data && data.code === 1) {
+            return data
+        } else {
+            console.log(eventBus)
+            if (eventBus) {
+                const message = data && data.msg ? data.msg : '未知错误';
+                console.log(message)
+                // 使用全局事件总线,触发总线中的show-alert事件
+                eventBus.emit('show-alert', message)
+            }
+        }
+    },
+    error => {
+        if (eventBus) {
+            console.log("程序错误")
+            eventBus.emit('show-alert', error.message);
+        }
+    }
+)
 
 //导出request通用请求供api调用
 export const request = (method, url, data = null, params = null) => {

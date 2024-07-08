@@ -25,13 +25,10 @@ export default {
       const requestData = {
         id: this.bookId
       };
-      this.$api.book.bookDetail(requestData).then(response => {
-        console.log(response.data);
-        if (response.data.code === 1) {
-          this.book = response.data.data;
-          console.log(this.book)
-        }
-      }).catch(error => console.error('Error fetching book details:', error));
+      this.$api.book.bookDetail(requestData).then(data => {
+        this.book = data.data;
+        console.log(this.book)
+      })
     }
   },
   mounted() {

@@ -5,24 +5,43 @@
 </template>
 
 <script>
+import {onMounted, onUnmounted, ref} from "vue";
+import {eventBus} from "@/main";
+
 export default {
-  data() {
-    return {
-      isAlertVisible: false,
-      alertMessage: ''
-    }
-  },
-  methods: {
-    // 其他组件调用此方法显示弹框和消息
-    showAlert(message) {
-      this.isAlertVisible = true;
-      this.alertMessage = message;
-      // 3秒后隐藏弹框
+  setup() {
+    // 创建响应式数据
+    const isAlertVisible = ref(false); // 用于控制警报是否可见
+    const alertMessage = ref(''); // 用于存储警报消息
+
+    // 打印此时Alert是否被注册到DOM中，只有注册到DOM才会在事件总线中监听show-alert
+    console.log("alert触发：", eventBus)
+
+    // 定义显示警报的方法
+    const showAlert = (message) => {
+      isAlertVisible.value = true; // 显示警报
+      alertMessage.value = message; // 设置警报消息
       setTimeout(() => {
-        this.isAlertVisible = false;
-        this.alertMessage = '';
+        isAlertVisible.value = false; // 3秒后隐藏警报
+        alertMessage.value = ''; // 清空警报消息
       }, 3000);
-    }
+    };
+    // 组件挂载时，注册事件监听器
+    onMounted(() => {
+      console.log('Received show-alert event');
+      eventBus.on('show-alert', showAlert);
+    });
+
+    // 组件卸载时，移除事件监听器
+    onUnmounted(() => {
+      eventBus.off('show-alert', showAlert);
+    });
+
+    // 返回响应式数据，使其可以在模板中使用
+    return {
+      isAlertVisible,
+      alertMessage
+    };
   }
 }
 </script>

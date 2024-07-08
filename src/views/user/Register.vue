@@ -71,14 +71,9 @@ export default {
           password: this.registerForm.password
         }
         console.log(params)
-        this.$api.user.register(params).then(response => {
-          if (response.data.code === 0) {
-            this.error = response.data.msg
-            this.showAlert = true
-          } else {
-            console.log("注册成功")
-            router.push('/home')
-          }
+        this.$api.user.register(params).then(data => {
+          console.log(data.msg)
+          router.push('/home')
         })
       } catch (error) {
         this.error = "异常错误"

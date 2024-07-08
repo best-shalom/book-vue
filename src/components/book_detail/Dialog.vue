@@ -81,18 +81,15 @@ export default {
     },
     // 显示已有的阅读类型
     showBookType() {
-      this.$api.type.typeList().then(response => {
-        if (response.data.code === 1) {
-          // 清空bookType列表
-          this.bookType = []
-          // 遍历后端数据将name整合到bookType列表
-          response.data.data.forEach(item => {
-            this.bookType.push(item.name);
-          })
-        } else {
-          this.$refs.alert.showAlert(response.data.msg)
-        }
-      }).catch(error => console.error('Error get bookTypeList:', error));
+      this.$api.type.typeList().then(data => {
+            // 清空bookType列表
+            this.bookType = []
+            // 遍历后端数据将name整合到bookType列表
+            data.data.forEach(item => {
+              this.bookType.push(item.name);
+            })
+          }
+      )
     },
     // 新增阅读类型
     addBookType() {
