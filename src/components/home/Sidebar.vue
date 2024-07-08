@@ -30,7 +30,7 @@ div {
   position: fixed;
   margin-top: 80px;
   width: 100px;
-  height: 100%;
+  height: 80%;
 }
 
 /* 同样侧边栏中的列表元素纵向均匀排列*/

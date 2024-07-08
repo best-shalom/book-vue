@@ -62,7 +62,7 @@ export default {
   margin-top: 80px;
   padding: 0;
   width: 100px;
-  height: 100%;
+  height: 80%;
   /* 设置总体为flex布局，使其中元素垂直排列*/
   display: flex;
   flex-direction: column;
