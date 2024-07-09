@@ -18,7 +18,7 @@ const api = {
             return request('post', '/book/listBooks/', data)
         },
         bookDetail(params) {
-            return request('get', '/book/getBookById/', null, params)
+            return request('get', '/book/getBookInfo/', null, params)
         },
         updateBookInfo(data) {
             return request('post', '/book/updateBookInfo/', data)

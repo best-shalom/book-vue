@@ -83,8 +83,8 @@ export default {
     // 根据父组件中dialogType的值显示不同的弹框
     showDialog() {
       if (this.dialogType === 'setType') {
-        this.dialogTitle = '选择书籍类型'
-        this.dialogMessage = '选择或创建你想添加的书籍类型'
+        this.dialogTitle = '选择阅读类型'
+        this.dialogMessage = '选择或创建你想添加的阅读类型'
       }
       if (this.dialogType === 'setEvaluate') {
         this.dialogTitle = '设置我的评价'
@@ -125,6 +125,7 @@ export default {
       this.$api.book.updateBookInfo(requestData).then(() => {
         // 设置阅读类型，点击确定后调用此方法，后端返回成功后触发关闭弹窗
         this.closeDialog()
+        window.location.reload()
       })
     },
     // 为书籍设置我的评价
@@ -165,6 +166,7 @@ export default {
       }
       this.$api.book.updateBookInfo(requestData).then(() => {
         this.closeDialog()
+        window.location.reload()
       })
     }
   },

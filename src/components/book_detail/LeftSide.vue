@@ -2,7 +2,7 @@
   <!--书籍详情页面：左侧边栏，包括添加评论，修改分类等-->
   <div class="left-side">
     <div class="set-type">
-      <span @click="showSetTypeDialog">设置书籍类型</span>
+      <span @click="showSetTypeDialog">设置阅读类型</span>
     </div>
     <div class="set-evaluate">
       <span @click="showSetEvaluateDialog">设置我的评价</span>
