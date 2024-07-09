@@ -13,6 +13,7 @@ import Login from "@/views/user/Login.vue";
 import Register from "@/views/user/Register.vue";
 import Home from "@/views/Home.vue";
 import BookDetails from "@/views/BookDetails.vue";
+import All from "@/views/All.vue";
 
 // Vue2中使用Vue.use(VueRouter)使用路由：
 // Vue.use(VueRouter) 是 Vue.js 官方推荐的一种使用 Vue 插件的方式。在这里，VueRouter 是 Vue.js 的一个插件，用于提供路由功能。
@@ -48,6 +49,11 @@ const routes = [
         props: true,
         // component是这个路由对应的组件，这里是 BookDetails 组件，当匹配到这个路由时，将会渲染 BookDetails 组件的内容。
         component: BookDetails
+    },
+    {
+        path: '/all',
+        name: '全部',
+        component: All
     }
 ]
 

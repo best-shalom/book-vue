@@ -1,6 +1,6 @@
 <template>
   <Navbar/>
-  <div class="app">
+  <div class="home-book">
     <Sidebar :classifies="classifies" @update:changeClassify="changeFilter"/>
     <!-- 使用书籍列表组件，并传递书籍数据 -->
     <BookList :books="books"/>
@@ -106,7 +106,7 @@ export default {
 };
 </script>
 <style scoped>
-.app {
+.home-book {
   display: flex; /* app中的侧边栏和书籍列表水平排列*/
 }
 

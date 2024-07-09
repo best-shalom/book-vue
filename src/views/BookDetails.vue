@@ -1,6 +1,6 @@
 <template>
   <Navbar/>
-  <div class="app">
+  <div class="book-detail">
     <LeftSide :book-id="bookId"/>
     <BookInfo :bookId="bookId"/>
   </div>
@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style scoped>
-.app {
+.book-detail {
   display: flex; /* flex默认就是横向排列*/
 }
 </style>
