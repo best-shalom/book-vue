@@ -4,6 +4,10 @@
     <div class="filter">
       <div class="classify">
         <p>分类：</p>
+        <div v-for="classify in classifies" :key="classify">
+          <input v-model="selectInfo.classifies" :value="classify" type="checkbox">
+          <label>{{ classify }}</label>
+        </div>
       </div>
       <div class="tag">
         <p>标签：</p>
@@ -11,6 +15,7 @@
       <div class="type">
         <p>阅读类型：</p>
       </div>
+      <button @click="fetchBooks">查询</button>
     </div>
     <BookList :books="books"></BookList>
     <Pagination :current-page="this.pages.pageNum" :total-pages="this.pages.total"
@@ -31,6 +36,14 @@ export default {
   },
   data() {
     return {
+      classifies: [],
+      tags: [],
+      types: [],
+      selectInfo: {
+        classifies: [],
+        tags: [],
+        types: []
+      },
       bookFilter: {
         classifyName: null,
         tagName: null,
@@ -50,9 +63,22 @@ export default {
     }
   },
   methods: {
+    // 从后端获取分类、tag等用于过滤的信息
+    fetchFilter() {
+      this.$api.classify.classifyList().then(responseData => {
+        this.classifies = responseData.data;
+      })
+      this.$api.type.typeList().then(responseData => {
+        this.types = []
+        responseData.data.forEach(item => {
+          this.bookType.push(item.name);
+        })
+      })
+    },
     // 根据筛选的条件从后端获取书籍
     fetchBooks() {
       this.bookFilter.page = this.pages.pageNum - 1
+      this.bookFilter.classifyName = this.selectInfo.classifies.join(',')
       this.$api.book.bookList(this.bookFilter).then(responseData => {
         let data = responseData.data
         this.books = data.bookList;
@@ -69,15 +95,20 @@ export default {
       this.pages.pageNum = newPage
     }
   },
+  // 监听过滤条件和页码的变化，触发列表刷新
   watch: {
-    'pages.pageNum': function () {
-      this.fetchBooks()
+    selectInfo: {
+      deep: true,  //使用 deep: true，深度监听对象内部的所有属性的变化，而不仅仅是对象本身的变化。
+      handler() {  //handler 是当 selectInfo 或其内部属性变化时要执行的函数。
+        this.fetchBooks()
+      }
     },
-    'bookFilter': function () {
+    'pages.pageNum': function () {
       this.fetchBooks()
     }
   },
   created() {
+    this.fetchFilter();
     this.fetchBooks();
   }
 }
@@ -103,7 +134,7 @@ export default {
 
 .book-list {
   /*这个直接用.book-list会影响到所有class为book-list的组件样式*/
-  margin-top: 80px;
+  margin-top: 200px;
   margin-left: 0;
   overflow-y: auto; /*允许滚动*/
 }
