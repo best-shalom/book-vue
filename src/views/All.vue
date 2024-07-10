@@ -11,25 +11,11 @@
       </div>
       <div class="tag">
         <p>标签：</p>
-        <!--<select v-model="selectInfo.tags" multiple>-->
-        <!--  <option v-for="tag in tags" :key="tag" :value="tag">-->
-        <!--    {{ tag }}-->
-        <!--  </option>-->
-        <!--</select>-->
-        <div v-if="!showAllTags" class="tag-list">
-          <div v-for="tag in tags.slice(0,10)" :key="tag">
-            <input v-model="selectInfo.tags" :value="tag" type="checkbox">
-            <label>{{ tag }}</label>
-          </div>
-          <button @click="showAllTags='True'">显示更多</button>
+        <div v-for="tag in tags.slice(0,10)" :key="tag">
+          <input v-model="selectInfo.tags" :value="tag" type="checkbox">
+          <label>{{ tag }}</label>
         </div>
-        <div v-else class="tag-list">
-          <div v-for="tag in tags" :key="tag">
-            <input v-model="selectInfo.tags" :value="tag" type="checkbox">
-            <label>{{ tag }}</label>
-          </div>
-          <button @click="showAllTags='False'">收起</button>
-        </div>
+        <button @click="showTagDialog= true">显示更多</button>
       </div>
       <div class="type">
         <p>阅读类型：</p>
@@ -51,6 +37,14 @@
     </div>
     <Pagination :current-page="this.pages.pageNum" :total-pages="this.pages.total"
                 @update:currentPage="updateCurrentPage"/>
+    <GenericDialog :title="'选择标签'" :visible="showTagDialog" @close="showTagDialog=false">
+      <div class="tag-dialog">
+        <div v-for="tag in tags" :key="tag">
+          <input v-model="selectInfo.tags" :value="tag" type="checkbox">
+          <label>{{ tag }}</label>
+        </div>
+      </div>
+    </GenericDialog>
   </div>
 </template>
 
@@ -58,9 +52,11 @@
 import Navbar from '@/components/home/Navbar.vue'
 import BookList from "@/components/common/BookList.vue";
 import Pagination from "@/components/common/Pagination.vue";
+import GenericDialog from "@/components/common/GenericDialog.vue";
 
 export default {
   components: {
+    GenericDialog,
     Pagination,
     BookList,
     Navbar
@@ -70,7 +66,7 @@ export default {
       classifies: [],
       tags: [],
       types: [],
-      showAllTags: false,
+      showTagDialog: false,
       selectInfo: {
         classifies: [],
         tags: [],
@@ -187,14 +183,15 @@ export default {
   flex-direction: row;
 }
 
-.tag-list {
-  display: flex;
-  flex-direction: row;
-}
-
 .book-list__all {
   display: flex;
   flex: 1; /* 使其占据剩余空间，避免当书籍列表为空时，filter占据空间*/
   overflow-y: auto; /*允许滚动*/
+}
+
+.tag-dialog {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; /* 使得flex项在必要时能够换行。*/
 }
 </style>
