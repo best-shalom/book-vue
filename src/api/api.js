@@ -32,6 +32,11 @@ const api = {
             return request('post', '/classify/add/', data)
         }
     },
+    tag: {
+        tagList() {
+            return request('get', '/tag/list')
+        }
+    },
     type: {
         typeList() {
             return request('get', '/type/list/')

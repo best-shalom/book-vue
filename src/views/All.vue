@@ -11,9 +11,17 @@
       </div>
       <div class="tag">
         <p>标签：</p>
+        <div v-for="tag in tags" :key="tag">
+          <input v-model="selectInfo.tags" :value="tag" type="checkbox">
+          <label>{{ tag }}</label>
+        </div>
       </div>
       <div class="type">
         <p>阅读类型：</p>
+        <div v-for="type in types" :key="type">
+          <input v-model="selectInfo.types" :value="type" type="checkbox">
+          <label>{{ type }}</label>
+        </div>
       </div>
       <button @click="fetchBooks">查询</button>
     </div>
@@ -68,10 +76,16 @@ export default {
       this.$api.classify.classifyList().then(responseData => {
         this.classifies = responseData.data;
       })
+      this.$api.tag.tagList().then(responseDate => {
+        this.tags = [];
+        responseDate.data.forEach(item => {
+          this.tags.push(item.name)
+        })
+      })
       this.$api.type.typeList().then(responseData => {
         this.types = []
         responseData.data.forEach(item => {
-          this.bookType.push(item.name);
+          this.types.push(item.name);
         })
       })
     },
@@ -79,6 +93,8 @@ export default {
     fetchBooks() {
       this.bookFilter.page = this.pages.pageNum - 1
       this.bookFilter.classifyName = this.selectInfo.classifies.join(',')
+      this.bookFilter.tagName = this.selectInfo.tags.join(',')
+      this.bookFilter.typeName = this.selectInfo.types.join(',')
       this.$api.book.bookList(this.bookFilter).then(responseData => {
         let data = responseData.data
         this.books = data.bookList;
@@ -131,6 +147,13 @@ export default {
   width: 100%;
   height: 15px;
 }
+
+/* 确保每个过滤条件部分都正确使用 flex 布局，并且父容器 .filter 也设置为 flex 布局。*/
+.classify, .tag, .type {
+  display: flex;
+  flex-direction: row;
+}
+
 
 .book-list {
   /*这个直接用.book-list会影响到所有class为book-list的组件样式*/
