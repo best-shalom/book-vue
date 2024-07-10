@@ -37,7 +37,7 @@
     </div>
     <Pagination :current-page="this.pages.pageNum" :total-pages="this.pages.total"
                 @update:currentPage="updateCurrentPage"/>
-    <GenericDialog :title="'选择标签'" :visible="showTagDialog" @close="showTagDialog=false">
+    <GenericDialog :height="'60%'" :title="'选择标签'" :visible="showTagDialog" @close="showTagDialog=false">
       <div class="tag-dialog">
         <div v-for="tag in tags" :key="tag">
           <input v-model="selectInfo.tags" :value="tag" type="checkbox">
