@@ -11,6 +11,11 @@
       </div>
       <div class="tag">
         <p>标签：</p>
+        <!--<select v-model="selectInfo.tags" multiple>-->
+        <!--  <option v-for="tag in tags" :key="tag" :value="tag">-->
+        <!--    {{ tag }}-->
+        <!--  </option>-->
+        <!--</select>-->
         <div v-for="tag in tags" :key="tag">
           <input v-model="selectInfo.tags" :value="tag" type="checkbox">
           <label>{{ tag }}</label>
@@ -25,7 +30,9 @@
       </div>
       <button @click="fetchBooks">查询</button>
     </div>
-    <BookList :books="books"></BookList>
+    <div class="book-list__all">
+      <BookList :books="books"></BookList>
+    </div>
     <Pagination :current-page="this.pages.pageNum" :total-pages="this.pages.total"
                 @update:currentPage="updateCurrentPage"/>
   </div>
@@ -142,10 +149,14 @@ export default {
   justify-content: center;
 }
 
+/* 将.filter的position设置为sticky，并设置top值，使其相对于父元素产生距离。*/
 .filter {
-  margin-top: 0;
+  position: sticky;
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  height: 15px;
+  height: auto; /* 如果 .filter 元素内部的内容超出了设定的高度，那么元素的实际高度将会因为内容的高度而增加，不再受 height 属性的限制。*/
+  z-index: 10;
 }
 
 /* 确保每个过滤条件部分都正确使用 flex 布局，并且父容器 .filter 也设置为 flex 布局。*/
@@ -154,11 +165,8 @@ export default {
   flex-direction: row;
 }
 
-
-.book-list {
-  /*这个直接用.book-list会影响到所有class为book-list的组件样式*/
-  margin-top: 200px;
-  margin-left: 0;
+.book-list__all {
+  display: flex;
   overflow-y: auto; /*允许滚动*/
 }
 </style>

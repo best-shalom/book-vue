@@ -3,7 +3,9 @@
   <div class="home-book">
     <Sidebar :classifies="classifies" @update:changeClassify="changeFilter"/>
     <!-- 使用书籍列表组件，并传递书籍数据 -->
-    <BookList :books="books"/>
+    <div class="book-list__home">
+      <BookList :books="books"/>
+    </div>
     <!-- 路由视图 -->
     <!--分页组件
     :currentPage="bookFilter.page": 这是一个绑定（binding）语法，将 currentPage 属性绑定到 Vue 实例中的 bookFilter.page 变量上。这表示当前页的值会与 bookFilter.page 变量保持同步，任何时候 bookFilter.page 变化时，currentPage 也会随之更新。
@@ -108,6 +110,11 @@ export default {
 <style scoped>
 .home-book {
   display: flex; /* app中的侧边栏和书籍列表水平排列*/
+}
+
+.book-list__home {
+  margin-top: 80px;
+  margin-left: 120px;
 }
 
 nav ul {

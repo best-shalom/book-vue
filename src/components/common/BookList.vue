@@ -33,10 +33,10 @@ export default {
 </script>
 
 <style>
-.book-list {
+/*.book-list {
   margin-top: 80px;
   margin-left: 120px;
-}
+}*/
 
 /* 设置书籍列表的样式 */
 .book-list ul {
