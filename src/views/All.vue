@@ -39,9 +39,12 @@
                 @update:currentPage="updateCurrentPage"/>
     <GenericDialog :height="'60%'" :title="'选择标签'" :visible="showTagDialog" @close="showTagDialog=false">
       <div class="tag-dialog">
-        <div v-for="tag in tags" :key="tag">
-          <input v-model="selectInfo.tags" :value="tag" type="checkbox">
-          <label>{{ tag }}</label>
+        <input v-model="searchQuery" class="tag-search" placeholder="搜素标签" type="text">
+        <div class="tag-list">
+          <div v-for="tag in filteredTags" :key="tag" class="tag-item">
+            <input v-model="selectInfo.tags" :value="tag" type="checkbox">
+            <label>{{ tag }}</label>
+          </div>
         </div>
       </div>
     </GenericDialog>
@@ -67,6 +70,7 @@ export default {
       tags: [],
       types: [],
       showTagDialog: false,
+      searchQuery: '',
       selectInfo: {
         classifies: [],
         tags: [],
@@ -88,6 +92,16 @@ export default {
         pageNum: 1,
         pageSize: 20
       }
+    }
+  },
+  computed: {
+    // 使用计算属性filteredTags来过滤标签列表。这样，用户在输入搜索关键字时，可以动态地筛选标签，并在标签对话框中显示匹配的标签。
+    filteredTags() {
+      if (this.searchQuery.trim() === '') {
+        return this.tags
+      }
+      const query = this.searchQuery.toLowerCase()
+      return this.tags.filter(tag => tag.toLowerCase().includes(query))
     }
   },
   methods: {
@@ -191,7 +205,23 @@ export default {
 
 .tag-dialog {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+}
+
+.tag-search {
+  width: 50%;
+}
+
+.tag-list {
+  display: flex;
   flex-wrap: wrap; /* 使得flex项在必要时能够换行。*/
+}
+
+.tag-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100px;
+  height: 40px;
 }
 </style>
