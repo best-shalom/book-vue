@@ -16,9 +16,19 @@
         <!--    {{ tag }}-->
         <!--  </option>-->
         <!--</select>-->
-        <div v-for="tag in tags" :key="tag">
-          <input v-model="selectInfo.tags" :value="tag" type="checkbox">
-          <label>{{ tag }}</label>
+        <div v-if="!showAllTags" class="tag-list">
+          <div v-for="tag in tags.slice(0,10)" :key="tag">
+            <input v-model="selectInfo.tags" :value="tag" type="checkbox">
+            <label>{{ tag }}</label>
+          </div>
+          <button @click="showAllTags='True'">显示更多</button>
+        </div>
+        <div v-else class="tag-list">
+          <div v-for="tag in tags" :key="tag">
+            <input v-model="selectInfo.tags" :value="tag" type="checkbox">
+            <label>{{ tag }}</label>
+          </div>
+          <button @click="showAllTags='False'">收起</button>
         </div>
       </div>
       <div class="type">
@@ -27,6 +37,12 @@
           <input v-model="selectInfo.types" :value="type" type="checkbox">
           <label>{{ type }}</label>
         </div>
+      </div>
+      <div class="selected-tags">
+        <span v-for="(tag,index) in selectInfo.tags" :key="tag">
+          {{ tag }}
+          <button @click="removeTag(index)">x</button>
+        </span>
       </div>
       <button @click="fetchBooks">查询</button>
     </div>
@@ -54,6 +70,7 @@ export default {
       classifies: [],
       tags: [],
       types: [],
+      showAllTags: false,
       selectInfo: {
         classifies: [],
         tags: [],
@@ -116,6 +133,10 @@ export default {
       // 即从子组件进行监听，根据子组件的变化修改父组件上显示的值。
       console.log("当前页面：", newPage)
       this.pages.pageNum = newPage
+    },
+    // 移除选中的标签:使用 splice 方法移除指定索引的标签。
+    removeTag(index) {
+      this.selectInfo.tags.splice(index, 1)
     }
   },
   // 监听过滤条件和页码的变化，触发列表刷新
@@ -149,9 +170,10 @@ export default {
   justify-content: center;
 }
 
-/* 将.filter的position设置为sticky，并设置top值，使其相对于父元素产生距离。*/
+/* 将.filter的position设置为absolute，并设置top值，使其相对于父元素产生距离。*/
 .filter {
   position: sticky;
+  top: 0;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -165,8 +187,14 @@ export default {
   flex-direction: row;
 }
 
+.tag-list {
+  display: flex;
+  flex-direction: row;
+}
+
 .book-list__all {
   display: flex;
+  flex: 1; /* 使其占据剩余空间，避免当书籍列表为空时，filter占据空间*/
   overflow-y: auto; /*允许滚动*/
 }
 </style>
