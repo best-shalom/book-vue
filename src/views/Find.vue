@@ -19,7 +19,7 @@
           过滤条件：
         </p>
         <!--折叠展开： 由于过滤条件可能较多，可以考虑默认折叠展示，用户点击展开按钮后展开所有过滤条件。-->
-        <Filter v-show="filterVisible" v-model:selectInfo="allFindInfo.selectInfo" @fetch-books="fetchBooks"/>
+        <Filter v-show="filterVisible" v-model:selectInfo="allFindInfo.filterInfo" @fetch-books="fetchBooks"/>
         <button @click="toggleFilterVisibility">
           {{ filterVisible ? '折叠' : '展开' }}
         </button>
