@@ -1,61 +1,14 @@
 <template>
   <Navbar/>
   <div class="all-book">
-    <div class="filter">
-      <div class="classify">
-        <p>分类：</p>
-        <div v-for="classify in classifies" :key="classify">
-          <input v-model="selectInfo.classifies" :value="classify" type="checkbox">
-          <label>{{ classify }}</label>
-        </div>
-      </div>
-      <div class="tag">
-        <p>标签：</p>
-        <div v-for="tag in tags.slice(0,10)" :key="tag">
-          <input v-model="selectInfo.tags" :value="tag" type="checkbox">
-          <label>{{ tag }}</label>
-        </div>
-        <button @click="showTagDialog= true">显示更多</button>
-      </div>
-      <div class="type">
-        <p>阅读类型：</p>
-        <div v-for="type in types" :key="type">
-          <input v-model="selectInfo.types" :value="type" type="checkbox">
-          <label>{{ type }}</label>
-        </div>
-      </div>
-      <div class="selected-items">
-        <span v-for="(classify,index) in selectInfo.classifies" :key="classify">
-          {{ classify }}
-          <button class="button-x" @click="removeSelected(index,'classify')">x</button>
-        </span>
-        <span v-for="(tag,index) in selectInfo.tags" :key="tag">
-          {{ tag }}
-          <button class="button-x" @click="removeSelected(index,'tag')">x</button>
-        </span>
-        <span v-for="(type,index) in selectInfo.types" :key="type">
-          {{ type }}
-          <button class="button-x" @click="removeSelected(index,'type')">x</button>
-        </span>
-      </div>
-      <button class="filter-button" @click="fetchBooks">查询</button>
+    <div class="filter__all">
+      <Filter v-model:selectInfo="selectInfo" @fetch-books="fetchBooks"/>
     </div>
     <div class="book-list__all">
       <BookList :books="books"></BookList>
     </div>
     <Pagination :current-page="this.pages.pageNum" :total-pages="this.pages.total"
                 @update:currentPage="updateCurrentPage"/>
-    <GenericDialog :height="'60%'" :title="'选择标签'" :visible="showTagDialog" @close="showTagDialog=false">
-      <div class="tag-dialog">
-        <input v-model="searchQuery" class="tag-search" placeholder="搜素标签" type="text">
-        <div class="tag-list">
-          <div v-for="tag in filteredTags" :key="tag" class="tag-item">
-            <input v-model="selectInfo.tags" :value="tag" type="checkbox">
-            <label>{{ tag }}</label>
-          </div>
-        </div>
-      </div>
-    </GenericDialog>
   </div>
 </template>
 
@@ -63,22 +16,17 @@
 import Navbar from '@/components/home/Navbar.vue'
 import BookList from "@/components/common/BookList.vue";
 import Pagination from "@/components/common/Pagination.vue";
-import GenericDialog from "@/components/common/GenericDialog.vue";
+import Filter from "@/components/common/Filter.vue";
 
 export default {
   components: {
-    GenericDialog,
     Pagination,
     BookList,
-    Navbar
+    Navbar,
+    Filter
   },
   data() {
     return {
-      classifies: [],
-      tags: [],
-      types: [],
-      showTagDialog: false,
-      searchQuery: '',
       selectInfo: {
         classifies: [],
         tags: [],
@@ -102,35 +50,7 @@ export default {
       }
     }
   },
-  computed: {
-    // 使用计算属性filteredTags来过滤标签列表。这样，用户在输入搜索关键字时，可以动态地筛选标签，并在标签对话框中显示匹配的标签。
-    filteredTags() {
-      if (this.searchQuery.trim() === '') {
-        return this.tags
-      }
-      const query = this.searchQuery.toLowerCase()
-      return this.tags.filter(tag => tag.toLowerCase().includes(query))
-    }
-  },
   methods: {
-    // 从后端获取分类、tag等用于过滤的信息
-    fetchFilter() {
-      this.$api.classify.classifyList().then(responseData => {
-        this.classifies = responseData.data;
-      })
-      this.$api.tag.tagList().then(responseDate => {
-        this.tags = [];
-        responseDate.data.forEach(item => {
-          this.tags.push(item.name)
-        })
-      })
-      this.$api.type.typeList().then(responseData => {
-        this.types = []
-        responseData.data.forEach(item => {
-          this.types.push(item.name);
-        })
-      })
-    },
     // 根据筛选的条件从后端获取书籍
     fetchBooks() {
       this.bookFilter.page = this.pages.pageNum - 1
@@ -151,33 +71,22 @@ export default {
       // 即从子组件进行监听，根据子组件的变化修改父组件上显示的值。
       console.log("当前页面：", newPage)
       this.pages.pageNum = newPage
-    },
-    // 移除选中的标签:使用 splice 方法移除指定索引的标签。
-    removeSelected(index, info) {
-      if (info === 'classify') {
-        this.selectInfo.classifies.splice(index, 1)
-      } else if (info === 'tag') {
-        this.selectInfo.tags.splice(index, 1)
-      } else if (info === 'type') {
-        this.selectInfo.types.splice(index, 1)
-      }
     }
   },
   // 监听过滤条件和页码的变化，触发列表刷新
   watch: {
-    selectInfo: {
-      deep: true,  //使用 deep: true，深度监听对象内部的所有属性的变化，而不仅仅是对象本身的变化。
-      handler() {  //handler 是当 selectInfo 或其内部属性变化时要执行的函数。
-        this.fetchBooks()
-      }
-    },
     'pages.pageNum': function () {
       this.fetchBooks()
+    },
+    selectInfo: {
+      deep: true,
+      handler() {
+        this.fetchBooks()
+      }
     }
   },
   created() {
-    this.fetchFilter();
-    this.fetchBooks();
+    this.fetchBooks()
   }
 }
 
@@ -194,82 +103,9 @@ export default {
   justify-content: center;
 }
 
-/* 将.filter的position设置为absolute，并设置top值，使其相对于父元素产生距离。*/
-.filter {
-  position: sticky;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: auto; /* 如果 .filter 元素内部的内容超出了设定的高度，那么元素的实际高度将会因为内容的高度而增加，不再受 height 属性的限制。*/
-  z-index: 10;
-}
-
-/* 确保每个过滤条件部分都正确使用 flex 布局，并且父容器 .filter 也设置为 flex 布局。*/
-.classify, .tag, .type {
-  display: flex;
-  flex-direction: row;
-}
-
 .book-list__all {
   display: flex;
   flex: 1; /* 使其占据剩余空间，避免当书籍列表为空时，filter占据空间*/
   overflow-y: auto; /*允许滚动*/
-}
-
-.filter-button {
-  width: 20%;
-}
-
-.selected-items {
-  display: flex;
-  flex-direction: row;
-}
-
-.selected-items span {
-  display: inline-flex; /* 将每个标签和按钮设置为 inline-flex 布局 */
-  align-items: center; /* 垂直居中对齐 */
-  padding: 2px 10px 3px 3px; /* 设置一些内边距，使标签和按钮与外框之间有间距 */
-  background-color: #e9ecef; /* 可选：设置标签的背景颜色 */
-  border-radius: 5px; /* 可选：设置标签的圆角 */
-}
-
-.button-x {
-  width: 5px;
-  border: none;
-  background: none;
-  cursor: pointer; /* 鼠标悬停时显示为指针 */
-  font-size: 16px; /* 调整按钮的字体大小 */
-  color: black; /* 可选：设置按钮的颜色 */
-}
-
-.tag button {
-  width: 80px;
-  height: 20px;
-  display: flex;
-  justify-content: center; /* 水平居中 */
-  align-items: center; /* 垂直居中 */
-}
-
-.tag-dialog {
-  display: flex;
-  flex-direction: column;
-}
-
-.tag-search {
-  width: 50%;
-}
-
-.tag-list {
-  display: flex;
-  flex-wrap: wrap; /* 使得flex项在必要时能够换行。*/
-}
-
-.tag-item {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100px;
-  height: 40px;
 }
 </style>
