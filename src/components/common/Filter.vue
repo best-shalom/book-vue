@@ -37,7 +37,7 @@
           <button class="button-x" @click="removeSelected(index,'type')">x</button>
         </span>
       </div>
-      <button class="filter-button" @click="emitFetchBooks">查询</button>
+      <!--<button class="filter-button" @click="emitFetchBooks">查询</button>-->
     </div>
     <GenericDialog :height="'60%'" :title="'选择标签'" :visible="showTagDialog" @close="showTagDialog=false">
       <div class="tag-dialog">
@@ -164,10 +164,6 @@ export default {
   flex-direction: row;
 }
 
-.filter-button {
-  width: 20%;
-}
-
 .selected-items {
   display: flex;
   flex-direction: row;
@@ -179,6 +175,7 @@ export default {
   padding: 2px 10px 3px 3px; /* 设置一些内边距，使标签和按钮与外框之间有间距 */
   background-color: #e9ecef; /* 可选：设置标签的背景颜色 */
   border-radius: 5px; /* 可选：设置标签的圆角 */
+  font-size: 16px;
 }
 
 .button-x {

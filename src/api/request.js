@@ -17,6 +17,15 @@ const http = axios.create({
 // 配置http请求拦截器
 http.interceptors.request.use(
     config => {
+        if (config.data) {
+            let requestData;
+            if (config.headers['Content-Type'] === 'application/json') {
+                requestData = JSON.parse(config.data);
+            } else {
+                requestData = config.data;
+            }
+            console.log('请求数据:', requestData); // 打印请求数据
+        }
         // 拦截器需要返回 config 对象，以继续发送请求。如果不返回 config 对象，请求将不会发送。
         return config
     },
