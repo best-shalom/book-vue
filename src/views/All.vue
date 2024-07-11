@@ -24,13 +24,21 @@
           <label>{{ type }}</label>
         </div>
       </div>
-      <div class="selected-tags">
+      <div class="selected-items">
+        <span v-for="(classify,index) in selectInfo.classifies" :key="classify">
+          {{ classify }}
+          <button class="button-x" @click="removeSelected(index,'classify')">x</button>
+        </span>
         <span v-for="(tag,index) in selectInfo.tags" :key="tag">
           {{ tag }}
-          <button @click="removeTag(index)">x</button>
+          <button class="button-x" @click="removeSelected(index,'tag')">x</button>
+        </span>
+        <span v-for="(type,index) in selectInfo.types" :key="type">
+          {{ type }}
+          <button class="button-x" @click="removeSelected(index,'type')">x</button>
         </span>
       </div>
-      <button @click="fetchBooks">查询</button>
+      <button class="filter-button" @click="fetchBooks">查询</button>
     </div>
     <div class="book-list__all">
       <BookList :books="books"></BookList>
@@ -145,8 +153,14 @@ export default {
       this.pages.pageNum = newPage
     },
     // 移除选中的标签:使用 splice 方法移除指定索引的标签。
-    removeTag(index) {
-      this.selectInfo.tags.splice(index, 1)
+    removeSelected(index, info) {
+      if (info === 'classify') {
+        this.selectInfo.classifies.splice(index, 1)
+      } else if (info === 'tag') {
+        this.selectInfo.tags.splice(index, 1)
+      } else if (info === 'type') {
+        this.selectInfo.types.splice(index, 1)
+      }
     }
   },
   // 监听过滤条件和页码的变化，触发列表刷新
@@ -201,6 +215,40 @@ export default {
   display: flex;
   flex: 1; /* 使其占据剩余空间，避免当书籍列表为空时，filter占据空间*/
   overflow-y: auto; /*允许滚动*/
+}
+
+.filter-button {
+  width: 20%;
+}
+
+.selected-items {
+  display: flex;
+  flex-direction: row;
+}
+
+.selected-items span {
+  display: inline-flex; /* 将每个标签和按钮设置为 inline-flex 布局 */
+  align-items: center; /* 垂直居中对齐 */
+  padding: 2px 10px 3px 3px; /* 设置一些内边距，使标签和按钮与外框之间有间距 */
+  background-color: #e9ecef; /* 可选：设置标签的背景颜色 */
+  border-radius: 5px; /* 可选：设置标签的圆角 */
+}
+
+.button-x {
+  width: 5px;
+  border: none;
+  background: none;
+  cursor: pointer; /* 鼠标悬停时显示为指针 */
+  font-size: 16px; /* 调整按钮的字体大小 */
+  color: black; /* 可选：设置按钮的颜色 */
+}
+
+.tag button {
+  width: 80px;
+  height: 20px;
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
 }
 
 .tag-dialog {
