@@ -61,9 +61,9 @@ const routes = [
         component: () => import('@/views/Rank.vue')
     },
     {
-        path: '/search',
+        path: '/find',
         name: '搜索',
-        component: () => import('@/views/Search.vue')
+        component: () => import('@/views/Find.vue')
     },
     {
         path: '/author',

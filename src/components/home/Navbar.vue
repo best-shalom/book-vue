@@ -5,7 +5,7 @@
         <li><a href="/home">首页</a></li>
         <li><a href="/all">全部</a></li>
         <li><a href="/rank">排行</a></li>
-        <li><a href="/search">搜索</a></li>
+        <li><a href="/find">搜索</a></li>
         <li><a href="/author">作者</a></li>
       </ul>
     </nav>

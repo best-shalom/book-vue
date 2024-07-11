@@ -12,14 +12,14 @@
   完结时间: 根据书籍的完结时间进行排序或指定范围。
   评分: 按照书籍的评分进行排序或指定范围。
   -->
-  <div class="search-book">
-    <div class="search-container">
+  <div class="find-book">
+    <div class="find-container">
       <div class="filter-info">
         <p>
           过滤条件：
         </p>
         <!--折叠展开： 由于过滤条件可能较多，可以考虑默认折叠展示，用户点击展开按钮后展开所有过滤条件。-->
-        <Filter v-show="filterVisible" v-model:selectInfo="selectInfo" @fetch-books="fetchBooks"/>
+        <Filter v-show="filterVisible" v-model:selectInfo="allFindInfo.selectInfo" @fetch-books="fetchBooks"/>
         <button @click="toggleFilterVisibility">
           {{ filterVisible ? '折叠' : '展开' }}
         </button>
@@ -33,41 +33,67 @@
         <form class="search-info-form">
           <div class="search-input-group">
             <label for="bookName">书名：</label>
-            <input id="bookName" v-model="searchInfo.bookName" placeholder="请输入书名" type="text">
-            <input id="bookNameFuzzy" v-model="searchInfo.bookNameFuzzy" type="checkbox">
+            <input id="bookName" v-model="allFindInfo.searchInfo.bookName" placeholder="请输入书名" type="text">
+            <input id="bookNameFuzzy" v-model="allFindInfo.searchInfo.bookNameFuzzy" type="checkbox">
             <label for="bookNameFuzzy">模糊查询</label>
           </div>
           <div class="search-input-group">
             <label for="authorName">作者：</label>
-            <input id="authorName" v-model="searchInfo.authorName" placeholder="请输入作者名" type="text">
+            <input id="authorName" v-model="allFindInfo.searchInfo.authorName" placeholder="请输入作者名" type="text">
           </div>
           <div class="search-input-group">
             <label for="mainCharacterName">主角：</label>
-            <input id="mainCharacterName" v-model="searchInfo.mainCharacterName" placeholder="请输入主角名" type="text">
+            <input id="mainCharacterName" v-model="allFindInfo.searchInfo.mainCharacterName" placeholder="请输入主角名"
+                   type="text">
           </div>
           <div class="search-input-group">
             <label for="content">内容：</label>
-            <input id="content" v-model="searchInfo.content" placeholder="请输入内容关键词" type="text">
-            <input id="contentFuzzy" v-model="searchInfo.contentFuzzy" type="checkbox">
+            <input id="content" v-model="allFindInfo.searchInfo.content" placeholder="请输入内容关键词" type="text">
+            <input id="contentFuzzy" v-model="allFindInfo.searchInfo.contentFuzzy" type="checkbox">
             <label for="contentFuzzy">模糊查询</label>
           </div>
         </form>
       </div>
       <div class="range-info">
-        <p>
-          范围条件：
-        </p>
-        <label>完结时间范围：</label>
-        <label>评分范围：</label>
-      </div>
-      <div class="sort-info">
-        <p>
-          排序条件：
-        </p>
-        <label>完结时间排序：</label>
-        <label>评分排序：</label>
+        <div>
+          <label>完结时间范围：</label>
+          <input v-model="allFindInfo.rangeInfo.finishTimeFrom" placeholder="开始日期" type="date">
+          <input v-model="allFindInfo.rangeInfo.finishTimeTo" placeholder="结束日期" type="date">
+        </div>
+        <div>
+          <label>评分范围：</label>
+          <input v-model="allFindInfo.rangeInfo.scoreMin" placeholder="最低评分" type="number">
+          <input v-model="allFindInfo.rangeInfo.scoreMax" placeholder="最高评分" type="number">
+        </div>
       </div>
 
+      <div class="sort-info">
+        <p>排序条件：</p>
+        <div>
+          <label>完结时间排序：</label>
+          <select v-model="allFindInfo.sortInfo.orderByFinish">
+            <option value="0">升序</option>
+            <option value="1">降序</option>
+            <option value="2">不排序</option>
+          </select>
+        </div>
+        <div>
+          <label>上传时间排序：</label>
+          <select v-model="allFindInfo.sortInfo.orderByUpload">
+            <option value="0">升序</option>
+            <option value="1">降序</option>
+            <option value="2">不排序</option>
+          </select>
+        </div>
+        <div>
+          <label>评分排序：</label>
+          <select v-model="allFindInfo.sortInfo.orderByScore">
+            <option value="0">升序</option>
+            <option value="1">降序</option>
+            <option value="2">不排序</option>
+          </select>
+        </div>
+      </div>
     </div>
     <div class="book-list__search">
       <BookList :books="books"/>
@@ -92,34 +118,37 @@ export default {
   },
   data() {
     return {
-      searchInfo: {
-        bookName: null,
-        bookNameFuzzy: false, //默认为精准查询
-        authorName: null,
-        mainCharacterName: null,
-        content: null,
-        contentFuzzy: false
-      },
-      selectInfo: {
-        classifies: [],
-        tags: [],
-        types: []
-      },
-      rangeInfo: {
-        finishTime: null,
-        score: null
-      },
-      sortInfo: {
-        orderByFinish: 2,
-        orderByUpload: 0
+      allFindInfo: {
+        searchInfo: {
+          bookName: null,
+          bookNameFuzzy: false, //默认为精准查询
+          authorName: null,
+          mainCharacterName: null,
+          content: null,
+          contentFuzzy: false
+        },
+        filterInfo: {
+          classifies: [],
+          tags: [],
+          types: []
+        },
+        rangeInfo: {
+          finishTimeFrom: null,
+          finishTimeTo: null,
+          scoreMin: null,
+          scoreMax: null
+        },
+        sortInfo: {
+          orderByFinish: 2,
+          orderByUpload: 2,
+          orderByScore: 2
+        }
       },
       bookFilter: {
-        classifyName: null,
-        tagName: null,
-        typeName: null,
+        filterInfo: null,
         searchInfo: null,
-        orderByFinish: 2,
-        orderByUpload: 0,
+        rangeInfo: null,
+        sortInfo: null,
         page: '0',
         size: '10',
       },
@@ -140,10 +169,10 @@ export default {
     // 根据筛选的条件从后端获取书籍
     fetchBooks() {
       this.bookFilter.page = this.pages.pageNum - 1
-      this.bookFilter.classifyName = this.selectInfo.classifies.join(',')
-      this.bookFilter.tagName = this.selectInfo.tags.join(',')
-      this.bookFilter.typeName = this.selectInfo.types.join(',')
+      this.bookFilter.filterInfo = this.buildFilterQuery()
       this.bookFilter.searchInfo = this.buildSearchQuery()
+      this.bookFilter.rangeInfo = this.buildRangeQuery()
+      this.bookFilter.sortInfo = this.buildSortQuery()
       this.$api.book.bookList(this.bookFilter).then(responseData => {
         let data = responseData.data
         this.books = data.bookList;
@@ -152,25 +181,67 @@ export default {
         this.pages.total = data.pageInfo.totalPages;
       })
     },
+    buildFilterQuery() {
+      let query = {};
+      if (this.allFindInfo.filterInfo.classifies.length > 0) {
+        query.classifyName = this.allFindInfo.filterInfo.classifies.join(',')
+      }
+      if (this.allFindInfo.filterInfo.tags.length > 0) {
+        query.tagName = this.allFindInfo.filterInfo.tags.join(',')
+      }
+      if (this.allFindInfo.filterInfo.types.length > 0) {
+        query.typeName = this.allFindInfo.filterInfo.types.join(',')
+      }
+      return query;
+    },
     buildSearchQuery() {
       let query = {};
-      if (this.searchInfo.bookName) {
-        query.bookName = this.searchInfo.bookName;
-        if (this.searchInfo.bookNameFuzzy) {
+      if (this.allFindInfo.searchInfo.bookName) {
+        query.bookName = this.allFindInfo.searchInfo.bookName;
+        if (this.allFindInfo.searchInfo.bookNameFuzzy) {
           query.bookNameFuzzy = true;
         }
       }
-      if (this.searchInfo.content) {
-        query.content = this.searchInfo.content;
-        if (this.searchInfo.contentFuzzy) {
+      if (this.allFindInfo.searchInfo.content) {
+        query.content = this.allFindInfo.searchInfo.content;
+        if (this.allFindInfo.searchInfo.contentFuzzy) {
           query.contentFuzzy = true;
         }
       }
-      if (this.searchInfo.authorName) {
-        query.authorName = this.searchInfo.authorName;
+      if (this.allFindInfo.searchInfo.authorName) {
+        query.authorName = this.allFindInfo.searchInfo.authorName;
       }
-      if (this.searchInfo.mainCharacterName) {
-        query.mainCharacterName = this.searchInfo.mainCharacterName;
+      if (this.allFindInfo.searchInfo.mainCharacterName) {
+        query.mainCharacterName = this.allFindInfo.searchInfo.mainCharacterName;
+      }
+      return query;
+    },
+    buildRangeQuery() {
+      let query = {};
+      if (this.allFindInfo.rangeInfo.finishTimeFrom) {
+        query.finishTimeFrom = this.allFindInfo.rangeInfo.finishTimeFrom;
+      }
+      if (this.allFindInfo.rangeInfo.finishTimeTo) {
+        query.finishTimeTo = this.allFindInfo.rangeInfo.finishTimeTo;
+      }
+      if (this.allFindInfo.rangeInfo.scoreMin) {
+        query.scoreMin = this.allFindInfo.rangeInfo.scoreMin;
+      }
+      if (this.allFindInfo.rangeInfo.scoreMax) {
+        query.scoreMax = this.allFindInfo.rangeInfo.scoreMax;
+      }
+      return query;
+    },
+    buildSortQuery() {
+      let query = {};
+      if (this.allFindInfo.sortInfo.orderByFinish) {
+        query.orderByFinish = this.allFindInfo.sortInfo.orderByFinish;
+      }
+      if (this.allFindInfo.sortInfo.orderByUpload) {
+        query.orderByUpload = this.allFindInfo.sortInfo.orderByUpload;
+      }
+      if (this.allFindInfo.sortInfo.orderByScore) {
+        query.orderByScore = this.allFindInfo.sortInfo.orderByScore;
       }
       return query;
     },
@@ -186,13 +257,7 @@ export default {
     'pages.pageNum': function () {
       this.fetchBooks()
     },
-    selectInfo: {
-      deep: true,
-      handler() {
-        this.fetchBooks()
-      }
-    },
-    searchInfo: {
+    allFindInfo: {
       deep: true,
       handler() {
         this.fetchBooks()
@@ -211,7 +276,7 @@ export default {
   padding: 0;
 }
 
-.search-book {
+.find-book {
   position: fixed;
   width: 100%;
   height: calc(100% - 70px);
@@ -228,7 +293,7 @@ export default {
 }
 
 /* 整个搜索部分纵向排列*/
-.search-container {
+.find-container {
   display: flex;
   flex-direction: column;
 }
