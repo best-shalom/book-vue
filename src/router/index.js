@@ -54,6 +54,21 @@ const routes = [
         path: '/all',
         name: '全部',
         component: All
+    },
+    {
+        path: '/rank',
+        name: '排行',
+        component: () => import('@/views/Rank.vue')
+    },
+    {
+        path: '/search',
+        name: '搜索',
+        component: () => import('@/views/Search.vue')
+    },
+    {
+        path: '/author',
+        name: '作者',
+        component: () => import('@/views/Author.vue')
     }
 ]
 
