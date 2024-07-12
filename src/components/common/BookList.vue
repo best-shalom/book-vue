@@ -3,14 +3,14 @@
     <ul>
       <!-- 循环显示所有书籍 -->
       <li v-for="book in books" :key="book.id" class="book-entry">
-        <a class="book-title" target="_blank" @click="showBookDetail(book.id)">{{ book.newName }}</a>
+        <a class="book-title" target="_blank" @click="showBookDetail(book.id)">{{ book.bookName }}</a>
         <div class="book-details">
-          <span class="book-tag"><i class="fas fa-tag"></i> {{ book.tag }}</span>
+          <span class="book-tag"><i class="fas fa-tag"></i> {{ book.bookTag }}</span>
           <!--fas 是 FontAwesome 图标库中表示“实心”图标的样式，而 fa-star 则表示星星图标-->
-          <span class="book-star"><i class="fas fa-star"></i> {{ book.star }}</span>
-          <span class="book-finish-time">完结日期：{{ book.finishTime }}</span>
-          <span class="book-size">书籍大小：{{ book.fileSize }}</span>
-          <span class="book-information">{{ book.information }}</span>
+          <span class="book-star"><i class="fas fa-star"></i> {{ book.bookStar }}</span>
+          <span class="book-finish-time">完结日期：{{ book.bookFinishTime }}</span>
+          <span class="book-size">书籍大小：{{ book.bookFileSize }}</span>
+          <span class="book-information">{{ book.bookInformation }}</span>
         </div>
       </li>
     </ul>

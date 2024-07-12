@@ -10,7 +10,9 @@ const http = axios.create({
     // baseURL: 'http://localhost:8080',
     // 设置默认的请求参数类型（对应apiPost中的参数选项）
     headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        // application/x-www-form-urlencoded 这种格式适合传统的表单提交方式，数据会被编码成键值对形式。
+        // application/json 这种格式用于发送 JSON 格式的数据，适合于复杂的数据结构。
+        'Content-Type': 'application/json;charset=utf-8'
     }
 })
 
