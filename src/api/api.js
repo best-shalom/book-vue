@@ -15,21 +15,21 @@ const api = {
     },
     book: {
         bookList(data) {
-            return request('post', '/book/listBooks/', data)
+            return request('post', '/book/listBooks', data)
         },
         bookDetail(params) {
-            return request('get', '/book/getBookInfo/', null, params)
+            return request('get', '/book/getBookInfo', null, params)
         },
         updateBookInfo(data) {
-            return request('post', '/book/updateBookInfo/', data)
+            return request('post', '/book/updateBookInfo', data)
         }
     },
     classify: {
         classifyList() {
-            return request('get', '/classify/showAllName/')
+            return request('get', '/classify/showAllName')
         },
         addClassify(data) {
-            return request('post', '/classify/add/', data)
+            return request('post', '/classify/add', data)
         }
     },
     tag: {
@@ -39,10 +39,10 @@ const api = {
     },
     type: {
         typeList() {
-            return request('get', '/type/list/')
+            return request('get', '/type/list')
         },
         addType(data) {
-            return request('post', '/type/add/', data)
+            return request('post', '/type/add', data)
         }
     }
 }
