@@ -13,7 +13,7 @@
   评分: 按照书籍的评分进行排序或指定范围。
   -->
   <div class="find-book">
-    <div class="find-container">
+    <div v-show="allFindVisible" class="find-container">
       <div class="filter-info">
         <p>
           过滤条件：
@@ -66,7 +66,6 @@
           <input v-model="allFindInfo.rangeInfo.scoreMax" placeholder="最高评分" type="number">
         </div>
       </div>
-
       <div class="sort-info">
         <p>排序条件：</p>
         <div>
@@ -95,6 +94,9 @@
         </div>
       </div>
     </div>
+    <button @click="toggleAllFindVisibility">
+      {{ allFindVisible ? '折叠' : '展开' }}
+    </button>
     <div class="book-list__search">
       <BookList :books="books"/>
     </div>
@@ -153,6 +155,7 @@ export default {
         size: '10',
       },
       filterVisible: false, // 控制过滤条件展开折叠的状态
+      allFindVisible: false, // 控制全部高级搜索条件展开折叠的状态
       books: [],
       pages: {
         totalBooks: 0,
@@ -165,6 +168,9 @@ export default {
   methods: {
     toggleFilterVisibility() {
       this.filterVisible = !this.filterVisible; // 切换展开折叠状态
+    },
+    toggleAllFindVisibility() {
+      this.allFindVisible = !this.allFindVisible; // 切换展开折叠状态
     },
     // 根据筛选的条件从后端获取书籍
     fetchBooks() {
