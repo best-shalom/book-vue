@@ -2,7 +2,12 @@
   <div>
     <!--每个按钮绑定不同的点击方法-->
     <button :disabled="currentPage === 1" @click="prevPage">上一页</button>
-    <span v-for="page in pages" :key="page" :class="{ active: currentPage === page }" @click="changePage(page)">
+    <!--:class 是 Vue.js 的一个指令，用于动态绑定 CSS 类。这里有一个对象语法，根据条件将不同的类绑定到 <span> 元素上：
+    active: currentPage === page：当 currentPage 与 page 相等时，active 类会被添加到 <span> 元素，即加粗
+    ellipsis: page === '...'：当 page 的值为 '...' 时，ellipsis 类会被添加到 <span> 元素，即无法选中-->
+    <!--只有在 page 不为 '...' 时才会调用 changePage 方法，通常 '...' 用作省略号，点击它不会触发页面更改-->
+    <span v-for="page in pages" :key="page" :class="{ active: currentPage === page, ellipsis: page === '...'}"
+          @click="page !== '...' && changePage(page)">
       {{ page }}
     </span>
     <button :disabled="currentPage === totalPages" @click="nextPage">下一页</button>
@@ -26,12 +31,32 @@ export default {
   },
   // emits 选项用来声明该组件将会触发名为 update:currentPage 的事件，以便向父组件传递新的页数值。
   emits: ['update:currentPage'],
+
   computed: {
     // 定义一个计算属性 pages，用来生成页数范围的数组。
     pages() {
       const range = [];
-      for (let i = 1; i <= this.totalPages; i++) {
-        range.push(i);
+      const total = this.totalPages;
+      const current = this.currentPage;
+
+      if (total <= 7) {
+        // 总页数小于等于7时，显示全部页码
+        for (let i = 1; i <= total; i++) {
+          range.push(i);
+        }
+      } else {
+        // 总页数大于7时，使用省略号
+        range.push(1);
+        if (current > 4) {
+          range.push('...');
+        }
+        for (let i = Math.max(2, current - 2); i <= Math.min(total - 1, current + 2); i++) {
+          range.push(i);
+        }
+        if (current < total - 3) {
+          range.push('...');
+        }
+        range.push(total);
       }
       return range;
     }
@@ -69,6 +94,10 @@ span {
 
 span.active {
   font-weight: bold;
+}
+
+span.ellipsis {
+  cursor: default; /* 表示当用户的鼠标悬停在省略号上时，光标将不会变成手形或其他指示可以点击的形状，而是保持默认的箭头形状。这表明省略号不是可点击的元素。*/
 }
 
 button {
