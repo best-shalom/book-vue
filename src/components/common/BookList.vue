@@ -2,8 +2,8 @@
   <div class="book-list">
     <ul>
       <!-- 循环显示所有书籍 -->
-      <li v-for="book in books" :key="book.id" class="book-entry">
-        <a class="book-title" target="_blank" @click="showBookDetail(book.id)">{{ book.bookName }}</a>
+      <li v-for="book in books" :key="book.bookId" class="book-entry">
+        <a class="book-title" target="_blank" @click="showBookDetail(book.bookId)">{{ book.bookName }}</a>
         <div class="book-details">
           <span class="book-tag"><i class="fas fa-tag"></i> {{ book.bookTag }}</span>
           <!--fas 是 FontAwesome 图标库中表示“实心”图标的样式，而 fa-star 则表示星星图标-->
