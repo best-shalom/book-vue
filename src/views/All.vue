@@ -33,11 +33,16 @@ export default {
         types: []
       },
       bookFilter: {
-        classifyName: null,
-        tagName: null,
-        typeName: null,
-        orderByFinish: 2,
-        orderByUpload: 0,
+        filterInfo: {
+          classifyName: null,
+          tagName: null,
+          typeName: null
+        },
+        sortInfo: {
+          orderByFinish: 2,
+          orderByUpload: 2,
+          orderByScore: 2
+        },
         page: '0',
         size: '10',
       },
@@ -54,9 +59,9 @@ export default {
     // 根据筛选的条件从后端获取书籍
     fetchBooks() {
       this.bookFilter.page = this.pages.pageNum - 1
-      this.bookFilter.classifyName = this.selectInfo.classifies.join(',')
-      this.bookFilter.tagName = this.selectInfo.tags.join(',')
-      this.bookFilter.typeName = this.selectInfo.types.join(',')
+      this.bookFilter.filterInfo.classifyName = this.selectInfo.classifies.join(',')
+      this.bookFilter.filterInfo.tagName = this.selectInfo.tags.join(',')
+      this.bookFilter.filterInfo.typeName = this.selectInfo.types.join(',')
       this.$api.book.bookList(this.bookFilter).then(responseData => {
         let data = responseData.data
         this.books = data.bookList;

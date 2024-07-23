@@ -39,9 +39,14 @@ export default {
       classifies: [],
       // 筛选条件
       bookFilter: {
-        classifyName: null,
-        orderByFinish: 2,
-        orderByUpload: 0,
+        filterInfo: {
+          classifyName: null
+        },
+        sortInfo: {
+          orderByFinish: 2,
+          orderByUpload: 2,
+          orderByScore: 2
+        },
         page: '0',
         size: '10',
       },
@@ -59,7 +64,7 @@ export default {
     // 监听侧边栏分类的触发事件，更新其传递的分类参数
     changeFilter(classify) {
       console.log(classify)
-      this.bookFilter.classifyName = classify;
+      this.bookFilter.filterInfo.classifyName = classify
       // 重置页码到第一页
       this.pages.pageNum = 1
       // 调用 fetchBooks 方法加载新分类的书籍
@@ -71,7 +76,7 @@ export default {
         this.classifies = responseData.data;
         if (this.classifies.length > 0) {
           // 默认加载第一个类别的书籍
-          this.bookFilter.classifyName = this.classifies[0]
+          this.bookFilter.filterInfo.classifyName = this.classifies[0]
           this.fetchBooks();
         }
       })
