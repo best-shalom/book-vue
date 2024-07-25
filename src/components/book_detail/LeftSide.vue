@@ -7,6 +7,9 @@
     <div class="set-evaluate">
       <span @click="showSetEvaluateDialog">设置评分评价</span>
     </div>
+    <div class="set-tag">
+      <span @click="showSetTagDialog">修改书籍标签</span>
+    </div>
     <div class="set-classify">
       <span @click="showSetClassifyDialog">修改书籍分类</span>
     </div>
@@ -42,6 +45,10 @@ export default {
     showSetEvaluateDialog() {
       this.isDialogVisible = true
       this.dialogType = 'setEvaluate'
+    },
+    showSetTagDialog() {
+      this.isDialogVisible = true
+      this.dialogType = 'setTag'
     },
     showSetClassifyDialog() {
       this.isDialogVisible = true

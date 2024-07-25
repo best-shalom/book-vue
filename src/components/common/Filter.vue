@@ -41,7 +41,7 @@
     </div>
     <GenericDialog :height="'60%'" :title="'选择标签'" :visible="showTagDialog" @close="showTagDialog=false">
       <div class="tag-dialog">
-        <input v-model="searchQuery" class="tag-search" placeholder="搜素标签" type="text">
+        <input v-model="searchQuery" class="tag-search" placeholder="搜索标签" type="text">
         <div class="tag-list">
           <div v-for="tag in filteredTags" :key="tag" class="tag-item">
             <input v-model="localSelectInfo.tags" :value="tag" type="checkbox">

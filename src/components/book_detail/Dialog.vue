@@ -27,6 +27,18 @@
         <button type="submit">确定</button>
       </form>
     </template>
+    <template v-if="dialogType==='setTag'">
+      <form class="set-tag-form" @submit.prevent="setBookTag">
+        <input v-model="setTag.searchTag" class="tag-search" placeholder="搜索标签" type="text">
+        <div class="tag-list">
+          <div v-for="tag in filteredTags" :key="tag" class="tag-item">
+            <input v-model="setTag.chooseTags" :value="tag" type="checkbox">
+            <label>{{ tag }}</label>
+          </div>
+        </div>
+        <button type="submit">确定</button>
+      </form>
+    </template>
     <template v-if="dialogType==='setClassify'">
       <form @submit.prevent="setBookClassify">
         <div v-for="classify in bookClassify" :key="classify">
@@ -64,6 +76,7 @@ export default {
       dialogMessage: '',
       bookType: [],
       bookClassify: [],
+      bookTags: [],
       setType: {
         chooseType: '',
       },
@@ -77,13 +90,24 @@ export default {
         name: ''
       },
       setTag: {
-        chooseTag: ''
+        chooseTags: [],
+        searchTag: ''
       },
       setEvaluate: {
         beforeScore: null,
         afterScore: null,
         evaluate: ''
       }
+    }
+  },
+  computed: {
+    // 使用计算属性filteredTags来过滤标签列表。这样，用户在输入搜索关键字时，可以动态地筛选标签，并在标签对话框中显示匹配的标签。
+    filteredTags() {
+      if (this.setTag.searchTag.trim() === '') {
+        return this.bookTags
+      }
+      const query = this.setTag.searchTag.toLowerCase()
+      return this.bookTags.filter(tag => tag.toLowerCase().includes(query))
     }
   },
   methods: {
@@ -97,8 +121,12 @@ export default {
         this.dialogTitle = '设置评分评价'
         this.dialogMessage = '输入评分评价'
       }
+      if (this.dialogType === 'setTag') {
+        this.dialogTitle = '修改书籍标签'
+        this.dialogMessage = '请选择书籍标签'
+      }
       if (this.dialogType === 'setClassify') {
-        this.dialogTitle = '设置书籍分类'
+        this.dialogTitle = '修改书籍分类'
         this.dialogMessage = '请选择书籍分类'
       }
     },
@@ -111,7 +139,7 @@ export default {
         const book = responseData.data;
         this.setClassify.chooseClassify = book.bookClassify;
         this.setType.chooseType = book.bookType;
-        this.setTag.chooseTag = book.bookTag;
+        this.setTag.chooseTags = book.bookTag.split(',');
         this.setEvaluate.beforeScore = book.beforeScore;
         this.setEvaluate.afterScore = book.afterScore;
         this.setEvaluate.evaluate = book.evaluate;
@@ -163,6 +191,28 @@ export default {
         window.location.reload()
       })
     },
+    // 显示已有的标签
+    showBookTag() {
+      this.$api.tag.tagList().then(responseData => {
+        // 清空bookTags列表
+        this.bookTags = []
+        // 遍历后端数据将name整合到bookTags列表
+        responseData.data.forEach(item => {
+          this.bookTags.push(item.name);
+        })
+      })
+    },
+    // 为书籍设置标签
+    setBookTag() {
+      const requestData = {
+        'bookId': this.bookId,
+        'tagNames': this.setTag.chooseTags.join(',')
+      }
+      this.$api.book.updateBookInfo(requestData).then(() => {
+        this.closeDialog()
+        window.location.reload()
+      })
+    },
     // 显示已有的书籍分类
     showBookClassify() {
       this.$api.classify.classifyList().then(responseData => {
@@ -207,6 +257,7 @@ export default {
     // 组件挂载完成后调用 showBookType和showBookClassify方法，显示已有的数据。
     this.showBookType()
     this.showBookClassify()
+    this.showBookTag()
     this.fetchBookOldInfo()
   }
 }
@@ -226,5 +277,21 @@ export default {
   width: 50%;
   position: relative;
   right: 20%;
+}
+
+.set-tag-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.set-tag-form input {
+  height: auto;
+}
+
+.set-tag-form button {
+  width: 50%;
+  position: fixed;
+  left: 50%;
+  top: 90%;
 }
 </style>
