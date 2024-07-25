@@ -10,6 +10,8 @@
           <span class="book-star"><i class="fas fa-star"></i> {{ book.bookStar }}</span>
           <span class="book-finish-time">完结日期：{{ book.bookFinishTime }}</span>
           <span class="book-size">书籍大小：{{ book.bookFileSize }}</span>
+          <span class="book-score">阅前评分：{{ book.bookBeforeScore }}</span>
+          <span class="book-score">阅后评分：{{ book.bookAfterScore }}</span>
           <span class="book-information">{{ book.bookInformation }}</span>
         </div>
       </li>
@@ -81,7 +83,7 @@ export default {
 }
 
 /* 设置书籍完成时间和大小的样式 */
-.book-finish-time, .book-size {
+.book-finish-time, .book-size, .book-score {
   font-size: 12px; /* 设置字体大小 */
   color: #666; /* 设置字体颜色 */
   display: block; /* 将元素转换为块级元素 */

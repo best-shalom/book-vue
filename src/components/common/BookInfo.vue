@@ -11,6 +11,8 @@
     <p>分类链接：<a :href="book.bookClassifyUrl" target="_blank">{{ book.bookClassifyUrl }}</a></p>
     <p>阅读类型：{{ book.bookType }}</p>
     <p>我的评价：{{ book.evaluate }}</p>
+    <p>阅前评分：{{ book.beforeScore }}</p>
+    <p>阅后评分：{{ book.afterScore }}</p>
     <p>简介：{{ book.information }}</p>
     <p>大小：{{ book.bookFileSize }}</p>
     <p>下载：<a :href="book.bookDownUrl" target="_blank">{{ book.bookDownUrl }}</a></p>

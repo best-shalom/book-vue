@@ -20,8 +20,10 @@
 
     </template>
     <template v-if="dialogType==='setEvaluate'">
-      <form @submit.prevent="setBookEvaluate">
-        <input v-model="setEvaluate.evaluate" placeholder="我的评价" type="text">
+      <form class="set-evaluate-form" @submit.prevent="setBookEvaluate">
+        <input v-model="setEvaluate.beforeScore" placeholder="阅前评分" type="text">
+        <input v-model="setEvaluate.afterScore" placeholder="阅后评分" type="text">
+        <textarea v-model="setEvaluate.evaluate" placeholder="我的评价"/>
         <button type="submit">确定</button>
       </form>
     </template>
@@ -68,14 +70,19 @@ export default {
       addType: {
         name: ''
       },
-      setEvaluate: {
-        evaluate: ''
-      },
       setClassify: {
         chooseClassify: ''
       },
       addClassify: {
         name: ''
+      },
+      setTag: {
+        chooseTag: ''
+      },
+      setEvaluate: {
+        beforeScore: null,
+        afterScore: null,
+        evaluate: ''
       }
     }
   },
@@ -87,13 +94,28 @@ export default {
         this.dialogMessage = '选择或创建你想添加的阅读类型'
       }
       if (this.dialogType === 'setEvaluate') {
-        this.dialogTitle = '设置我的评价'
-        this.dialogMessage = '输入评价'
+        this.dialogTitle = '设置评分评价'
+        this.dialogMessage = '输入评分评价'
       }
       if (this.dialogType === 'setClassify') {
         this.dialogTitle = '设置书籍分类'
         this.dialogMessage = '请选择书籍分类'
       }
+    },
+    // 获取旧的书籍详情
+    fetchBookOldInfo() {
+      const requestData = {
+        id: this.bookId
+      };
+      this.$api.book.bookDetail(requestData).then(responseData => {
+        const book = responseData.data;
+        this.setClassify.chooseClassify = book.bookClassify;
+        this.setType.chooseType = book.bookType;
+        this.setTag.chooseTag = book.bookTag;
+        this.setEvaluate.beforeScore = book.beforeScore;
+        this.setEvaluate.afterScore = book.afterScore;
+        this.setEvaluate.evaluate = book.evaluate;
+      })
     },
     closeDialog() {
       this.$emit('close')
@@ -132,6 +154,8 @@ export default {
     setBookEvaluate() {
       const requestData = {
         'bookId': this.bookId,
+        'beforeScore': this.setEvaluate.beforeScore,
+        'afterScore': this.setEvaluate.afterScore,
         'evaluate': this.setEvaluate.evaluate
       }
       this.$api.book.updateBookInfo(requestData).then(() => {
@@ -183,10 +207,24 @@ export default {
     // 组件挂载完成后调用 showBookType和showBookClassify方法，显示已有的数据。
     this.showBookType()
     this.showBookClassify()
+    this.fetchBookOldInfo()
   }
 }
 </script>
 
 <style scoped>
+.set-evaluate-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+.set-evaluate-form input,
+.set-evaluate-form textarea,
+.set-evaluate-form button {
+  margin: 10px 0 0 0;
+  width: 50%;
+  position: relative;
+  right: 20%;
+}
 </style>

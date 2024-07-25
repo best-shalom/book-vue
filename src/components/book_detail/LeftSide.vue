@@ -5,7 +5,7 @@
       <span @click="showSetTypeDialog">设置阅读类型</span>
     </div>
     <div class="set-evaluate">
-      <span @click="showSetEvaluateDialog">设置我的评价</span>
+      <span @click="showSetEvaluateDialog">设置评分评价</span>
     </div>
     <div class="set-classify">
       <span @click="showSetClassifyDialog">修改书籍分类</span>
